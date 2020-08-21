@@ -1,0 +1,35 @@
+@import "./variables";
+@import "./animations";
+
+
+.headline{
+  color: #fff;
+//  text-transform: uppercase;
+//  backface-visibility: hidden;
+text-align: center;
+
+  &-1{
+   // z-index: 0;
+   // position: relative;
+    //margin-top: 0;
+    margin: 0 auto;
+    font-size: $headline-font-size;
+   
+  }
+
+  &-2{
+   // z-index: 0;
+  //  position: relative;
+    font-size: $headline-font-size-2;
+    margin: 0 auto;
+  }
+
+
+}
+
+ 
+
+@media(max-width: 600px){
+
+} 
+

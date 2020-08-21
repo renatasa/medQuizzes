@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 //import homePhoto from '../assets/img/landing_page.jpg';
 import './Home.scss';
+import Tachi from '../Tachi/Tachi';
 
 export class Home extends Component {
     render() {
@@ -13,6 +14,8 @@ export class Home extends Component {
        
                 <p class="info">This non-profit application is created for demonstration purposes only! You can find detailed guidelines at www.escardio.org . </p>
             
+                <Tachi/>
+
             </div>
         )
     }

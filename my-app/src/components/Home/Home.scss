@@ -1,9 +1,9 @@
-@import '../sass/variables';
-@import '../sass/typography';
+@import '../../sass//variables';
+@import '../../sass/typography';
 
 .Home{
     height: 100vh;
-    background-image: url(../assets/img/landing_page.jpg);
+    background-image: url(../../assets/img/landing_page.jpg);
     background-size: cover;
 
     // &__photo{

@@ -1,0 +1,39 @@
+@import '../../sass//variables';
+
+.questionBox{
+    text-align: center;
+    color: $color-grey-dark-4;
+    font-size: $default-font-size-2;
+    background-color: $color-grey-light-3 ;
+    border-radius: 1rem;
+    border: .1rem solid $color-grey-dark-2 ;
+    padding: 1rem;
+    margin-left: 12%;
+    width: 70%;
+}
+
+.answer{
+    border: .1rem solid $color-green-very-light;
+    border-radius: .2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.answer:hover{
+    background-color: $color-green-very-light;
+}
+
+.arrow {
+    border: solid $color-grey-dark-2;
+    border-width: 0 .3rem .3rem 0;
+    display: inline-block;
+    padding: .3rem;
+    cursor: pointer;
+
+  }
+  
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }

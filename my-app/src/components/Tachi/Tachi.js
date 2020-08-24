@@ -46,12 +46,16 @@ export class Tachi extends Component {
 
    answerClicked=(x)=>{
        console.log('answerClicked');
-      // this.setState({...this.state.selectedAnswers, answerNumber});
+       let newAnswers= [...this.state.selectedAnswers, x] ;
+       console.log('newanswers ', newAnswers);
+       this.setState({selectedAnswers: [...newAnswers]});
       console.log(x);
+      console.log('state.selected answers', this.state.selectedAnswers);
    }
     
     render() {
         console.log(questionare, 'from tachi');
+        console.log(this.state.selectedAnswers, 'this.state.selectedAnswers from render');
         
         return (
             <div>

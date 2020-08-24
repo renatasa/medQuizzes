@@ -46,9 +46,23 @@ export class Tachi extends Component {
 
    answerClicked=(x)=>{
        console.log('answerClicked');
-       let newAnswers= [...this.state.selectedAnswers, x] ;
-       console.log('newanswers ', newAnswers);
-       this.setState({selectedAnswers: [...newAnswers]});
+       let duplicates = false;
+       let newAnswers=[...this.state.selectedAnswers];
+       for( let i = 0; i < newAnswers.length; i++){ 
+        if( newAnswers[i] === x){
+          newAnswers.splice(i, 1);
+          duplicates=true; 
+        }
+     }
+
+     if(!duplicates){
+        this.setState({selectedAnswers: [...this.state.selectedAnswers, x]});
+     } else {
+        this.setState({selectedAnswers: [...newAnswers]})
+     }
+      // let newAnswers= [...this.state.selectedAnswers, x] ;
+     //  console.log('newanswers ', newAnswers);
+     //  this.setState({selectedAnswers: [...this.state.selectedAnswers, x]});
       console.log(x);
       console.log('state.selected answers', this.state.selectedAnswers);
    }

@@ -30,16 +30,24 @@ import  {questionare} from './Questionare.js';
 export class Tachi extends Component {
     state={
          currentQuestionNumber: 0,
+         selectedAnswers: [],
          apple:null
     }
 
     nextQuestion=()=>{
+        console.log('next clicked');
         console.log(this.state.apple);
         console.log(this.state.currentQuestionNumber);
     //  console.log(this.state.currentQuestionNumber);
-    //     this.setState({currentQuestionNumber: currentQuestionNumber+1});
+       this.setState(currentQuestionNumber=>({currentQuestionNumber: this.state.currentQuestionNumber+1}));
     //     console.log("hello");
 
+   }
+
+   answerClicked=(x)=>{
+       console.log('answerClicked');
+      // this.setState({...this.state.selectedAnswers, answerNumber});
+      console.log(x);
    }
     
     render() {
@@ -47,7 +55,10 @@ export class Tachi extends Component {
         
         return (
             <div>
-                <SingleQuestion clicked={this.nextQuestion} currentQuestion={questionare[this.state.currentQuestionNumber]} />
+                <SingleQuestion answerClicked={this.answerClicked} 
+                                nextClicked={this.nextQuestion} 
+                                key={this.state.currentQuestionNumber} 
+                                currentQuestion={questionare[this.state.currentQuestionNumber]} />
             </div>
         )
     }

@@ -16,6 +16,7 @@ console.log(props.answerClicked);
         let x=10;
 
         console.log('single question ', Object.keys(props.currentQuestion.answers));
+      //  let currentQuestionNumber= props.currentQuestion.questionNumber ;
 
         let answers= props.currentQuestion.answers.map((answer, index)=><div class="answer" key={index} onClick={()=>props.answerClicked(index)} >{answer}</div>)
 

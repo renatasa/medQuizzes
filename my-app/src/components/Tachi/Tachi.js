@@ -15,16 +15,15 @@ export class Tachi extends Component {
 
     nextQuestion=()=>{
         console.log('next clicked');
-        console.log('questionsAndSelectedAnswers from nextQuestion ', this.state.questionsAndSelectedAnswers);
-        console.log(this.state.currentQuestionNumber);
 
-       this.setState({  currentQuestionNumber: this.state.currentQuestionNumber+1,
-                        questionsAndSelectedAnswers : 
-                        [...this.state.questionsAndSelectedAnswers, 
-                            {currentQuestion: (this.state.currentQuestionNumber+1), selectedAnswers: []}
-                        ]
+        this.setState({  currentQuestionNumber: this.state.currentQuestionNumber+1,
+            questionsAndSelectedAnswers : 
+            [...this.state.questionsAndSelectedAnswers, 
+                {currentQuestion: (this.state.currentQuestionNumber+1), selectedAnswers: []}
+            ]
 
-                    }) ;
+        }) ;
+       
 
         console.log("hello ", this.state);
 
@@ -75,13 +74,19 @@ export class Tachi extends Component {
         // console.log('this.state.questionsAndselectedAnswers from render TYPE OF ', typeof this.state.questionsAndSelectedAnswers );
         // console.log('this.state.questionsAndselectedAnswers from render isArray ',  Array.isArray(this.state.questionsAndSelectedAnswers) );
         // console.log("this.state from render ", this.state);
+        let questionOrResult=null;
+        if(this.state.currentQuestionNumber<questionare.length){
+            questionOrResult= <SingleQuestion answerClicked={this.answerClicked} 
+                                            nextClicked={this.nextQuestion} 
+                                            key={this.state.currentQuestionNumber} 
+                                            currentQuestion={questionare[this.state.currentQuestionNumber]} />
+        } else {
+           questionOrResult= <div>You have finished the quiz</div>
+        }
         
         return (
             <div>
-                <SingleQuestion answerClicked={this.answerClicked} 
-                                nextClicked={this.nextQuestion} 
-                                key={this.state.currentQuestionNumber} 
-                                currentQuestion={questionare[this.state.currentQuestionNumber]} />
+                {questionOrResult}
             </div>
         )
     }

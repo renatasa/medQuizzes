@@ -58,7 +58,7 @@ export class Tachi extends Component {
                             updatedObj[this.state.currentQuestionNumber].selectedAnswers.splice(duplicatedAnswerIndex, 1);
                         }
                         
-
+                        updatedObj[this.state.currentQuestionNumber].selectedAnswers.sort();
                             console.log('updatedObj ', updatedObj);
 
                            this.setState({questionsAndSelectedAnswers: updatedObj})
@@ -75,6 +75,7 @@ export class Tachi extends Component {
         // console.log('this.state.questionsAndselectedAnswers from render isArray ',  Array.isArray(this.state.questionsAndSelectedAnswers) );
         // console.log("this.state from render ", this.state);
         let questionOrResult=null;
+
         if(this.state.currentQuestionNumber<questionare.length){
             questionOrResult= <SingleQuestion answerClicked={this.answerClicked} 
                                             nextClicked={this.nextQuestion} 

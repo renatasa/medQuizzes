@@ -7,7 +7,7 @@ export const singleQuestion=(props)=>{
 
         console.log('single question ', Object.keys(props.currentQuestion.answers));
 
-        let answers= props.currentQuestion.answers.map((answer, index)=><div class="answer" key={index} onClick={()=>props.answerClicked(index)} >{answer}</div>)
+        let answers= props.currentQuestion.answers.map((answer, index)=><div class="answerNotSelected" key={index} onClick={()=>props.answerClicked(index)} >{answer}</div>)
 
         return (
             <div class="questionBox">

@@ -10,7 +10,8 @@ export class Tachi extends Component {
                 selectedAnswers: []
             }
          ],
-         currentQuestionNumber: 0
+         currentQuestionNumber: 0, 
+         checkedAnswers: []
     }
 
     nextQuestion=()=>{
@@ -25,12 +26,6 @@ export class Tachi extends Component {
             let c=[];
             let d=[];
 
-            
-            
-            // for (let i=0; i<questionare[0].answers.length; i++){
-            //     a[i].push(null);
-            //     b[i].push(null);
-            // }
 
             for(let z=0; z<questionare.length; z++){
                 a=[];
@@ -53,13 +48,6 @@ export class Tachi extends Component {
                         }
                     }
 
-                    // let longerArr=null;
-                    // if(a.length>b.length){
-                    //     longerArr=a;
-                    // }else{
-                    //     longerArr=b;
-                    // }
-
                     for(let i=0; i<questionare[z].answers.length; i++){
                         if(a[i]==true && b[i]==true){
                             c[i]=true;
@@ -74,8 +62,9 @@ export class Tachi extends Component {
                    
                 }
                 d.push(c);
-
             }
+            
+            this.setState({checkedAnswers : d})
 
                 console.log('c from nex question answer checking ', c);
                 console.log('d from nex question answer checking ', d);
@@ -142,6 +131,7 @@ export class Tachi extends Component {
         // console.log('this.state.questionsAndselectedAnswers from render TYPE OF ', typeof this.state.questionsAndSelectedAnswers );
         // console.log('this.state.questionsAndselectedAnswers from render isArray ',  Array.isArray(this.state.questionsAndSelectedAnswers) );
         // console.log("this.state from render ", this.state);
+        console.log('checked answers ', this.state.checkedAnswers);
         let questionOrResult=null;
 
         if(this.state.currentQuestionNumber<questionare.length){
@@ -150,9 +140,15 @@ export class Tachi extends Component {
                                             key={this.state.currentQuestionNumber} 
                                             currentQuestion={questionare[this.state.currentQuestionNumber]} />
         } else {
-           questionOrResult= <SingleQuestion answerClicked={this.answerClicked} 
-                                 key={0} 
-                                 currentQuestion={questionare[0]} />
+           questionOrResult=[]; 
+           for (let i=0; i<questionare.length; i++){
+               questionOrResult[i]=<SingleQuestion
+                                     checkedAnswers={this.state.checkedAnswers[i]} 
+                                     currentQuestion={questionare[i]} 
+                                     key={i}  
+                                    />
+           }
+           
         }
 
         return (

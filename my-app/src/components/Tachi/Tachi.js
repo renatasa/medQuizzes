@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SingleQuestion from '../SingleQuestion/SingleQuestion';
 import  {questionare} from './Questionare.js';
+import './Tachi.scss';
 
 export class Tachi extends Component {
     state={
@@ -37,6 +38,7 @@ export class Tachi extends Component {
                 //c[] - checked answers array is created after comparison of array a and array b
                 c=[];
                
+                //checks which answers of a question are correct by comparing with questionare's correct answers
                 for(let y=0; y<questionare[z].answers.length; y++){
                     a[y]=null;
                     b[y]=null;
@@ -48,12 +50,18 @@ export class Tachi extends Component {
                         }
                     }
 
+                    //checks which answers of a question user has chosen as correct
                     for(let i=0; i<this.state.questionsAndSelectedAnswers[z].selectedAnswers.length; i++){
                         if(y==this.state.questionsAndSelectedAnswers[z].selectedAnswers[i]){
                             b[y]=true;
                         }
                     }
 
+                    //compares correct answers with answers that user has selected as correct
+                    // true &  true = true  -  correct answer which user selected  -> displays green at the end of the test
+                    // ture & null = false  -  correct answer which user didn't select  -> displays red at the end of the test
+                    // null & true = false  -  wrong answer which user selected  -> displays red at the end of the test
+                    // null & null = wrong answer which user didn't select -> displays non colorised at the end of the test
                     for(let i=0; i<questionare[z].answers.length; i++){
                         if(a[i]==true && b[i]==true){
                             c[i]=true;
@@ -68,9 +76,9 @@ export class Tachi extends Component {
                    
                 }
 
-                //pushes correct and incorrect question values to correct answers array
+                //pushes correct and incorrect answers  to correct answers array
                 e.push(a);
-                //pushes correct wrong and non selected answers to checked answers array
+                //pushes correct correct wrong and non selected answers to checked answers [user selected answers] array
                 d.push(c);
             }
             
@@ -130,19 +138,9 @@ export class Tachi extends Component {
 
                            this.setState({questionsAndSelectedAnswers: updatedObj})
 
-//console.log('is state.queationsAndAnswers an array? ',  Array.isArray(this.state.questionsAndSelectedAnswers))
-//                        console.log('is updatedObj an array? ',  Array.isArray(updatedObj))
-
    }
     
     render() {
-        console.log('this.state from render ', this.state);
-        console.log('this.state correct answers from render ', this.state.correctAnswers);
-        // console.log('this.state.questionsAndselectedAnswers from render', this.state.questionsAndSelectedAnswers );
-        // console.log('this.state.questionsAndselectedAnswers from render TYPE OF ', typeof this.state.questionsAndSelectedAnswers );
-        // console.log('this.state.questionsAndselectedAnswers from render isArray ',  Array.isArray(this.state.questionsAndSelectedAnswers) );
-        // console.log("this.state from render ", this.state);
-        console.log('checked answers ', this.state.checkedAnswers);
         let questionOrResult=null;
         let correctAnswers = null;
 
@@ -172,8 +170,8 @@ export class Tachi extends Component {
         }
 
         return (
-            <div>
-                <div>{questionOrResult}</div>
+            <div class="questionare">
+                <div >{questionOrResult}</div>
                 <div>{correctAnswers}</div>
 
             </div>

@@ -171,8 +171,8 @@ export class Tachi extends Component {
 
         return (
             <div class="questionare">
-                <div >{questionOrResult}</div>
-                <div>{correctAnswers}</div>
+                <div class="questionareBox">{questionOrResult}</div>
+                <div class="questionareBox">{correctAnswers}</div>
 
             </div>
         )

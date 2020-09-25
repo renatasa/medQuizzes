@@ -29,8 +29,6 @@ export const singleQuestion=(props)=>{
             answers=answersArr;
         }
 
-       
-
         return (
             <div class="questionBox">
                 <div class="question">{props.currentQuestion.question}</div>

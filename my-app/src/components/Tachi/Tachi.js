@@ -11,7 +11,8 @@ export class Tachi extends Component {
             }
          ],
          currentQuestionNumber: 0, 
-         checkedAnswers: []
+         checkedAnswers: [],
+         correctAnswers: []
     }
 
     nextQuestion=()=>{
@@ -20,17 +21,22 @@ export class Tachi extends Component {
         //cheking correct and wrong answers for previous question
         if (this.state.currentQuestionNumber==questionare.length-1){
             console.log('checking answers');
-            let correctAnswers=[];
+        //    let correctAnswers=[];
             let a=[];
             let b=[];
             let c=[];
             let d=[];
+            let e=[];
 
 
             for(let z=0; z<questionare.length; z++){
+                //a[] - array of correct answers
                 a=[];
+                //b[] - array of answers that user has chosen as correct
                 b=[];
+                //c[] - checked answers array is created after comparison of array a and array b
                 c=[];
+               
                 for(let y=0; y<questionare[z].answers.length; y++){
                     a[y]=null;
                     b[y]=null;
@@ -58,13 +64,17 @@ export class Tachi extends Component {
                         }
 
                     }
-      
+                    
                    
                 }
+
+                //pushes correct and incorrect question values to correct answers array
+                e.push(a);
+                //pushes correct wrong and non selected answers to checked answers array
                 d.push(c);
             }
             
-            this.setState({checkedAnswers : d})
+            this.setState({checkedAnswers : d, correctAnswers:e})
 
                 console.log('c from nex question answer checking ', c);
                 console.log('d from nex question answer checking ', d);
@@ -127,12 +137,14 @@ export class Tachi extends Component {
     
     render() {
         console.log('this.state from render ', this.state);
+        console.log('this.state correct answers from render ', this.state.correctAnswers);
         // console.log('this.state.questionsAndselectedAnswers from render', this.state.questionsAndSelectedAnswers );
         // console.log('this.state.questionsAndselectedAnswers from render TYPE OF ', typeof this.state.questionsAndSelectedAnswers );
         // console.log('this.state.questionsAndselectedAnswers from render isArray ',  Array.isArray(this.state.questionsAndSelectedAnswers) );
         // console.log("this.state from render ", this.state);
         console.log('checked answers ', this.state.checkedAnswers);
         let questionOrResult=null;
+        let correctAnswers = null;
 
         if(this.state.currentQuestionNumber<questionare.length){
             questionOrResult= <SingleQuestion answerClicked={this.answerClicked} 
@@ -141,19 +153,29 @@ export class Tachi extends Component {
                                             currentQuestion={questionare[this.state.currentQuestionNumber]} />
         } else {
            questionOrResult=[]; 
+           correctAnswers=[];
            for (let i=0; i<questionare.length; i++){
                questionOrResult[i]=<SingleQuestion
                                      checkedAnswers={this.state.checkedAnswers[i]} 
                                      currentQuestion={questionare[i]} 
                                      key={i}  
                                     />
+                
+               correctAnswers[i]=<SingleQuestion 
+                                    checkedAnswers={this.state.correctAnswers[i]} 
+                                    currentQuestion={questionare[i]} 
+                                    key={i}  
+                                   />
            }
+
            
         }
 
         return (
             <div>
-                {questionOrResult}
+                <div>{questionOrResult}</div>
+                <div>{correctAnswers}</div>
+
             </div>
         )
     }

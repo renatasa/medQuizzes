@@ -12,17 +12,33 @@
     width: 70%;
 }
 
-.answer{
+.answerNotSelected{
     border: .1rem solid $color-green-very-light;
     border-radius: .2rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    cursor: pointer;
+    cursor: pointer; 
 }
 
-.answer:hover{
+.answerNotSelected:hover{
     background-color: $color-green-very-light;
     color: $color-green-dark ;
+}
+
+.answerCorrect{
+    border: .1rem solid $color-green-correct-answer;
+    background-color: $color-green-correct-answer;
+    border-radius: .2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.answerWrong{
+    border: .1rem solid $color-wrong-answer;
+    background-color: .1rem solid $color-wrong-answer;
+    border-radius: .2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;   
 }
 
 .arrow {

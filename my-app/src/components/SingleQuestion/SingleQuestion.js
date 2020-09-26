@@ -3,16 +3,11 @@ import './SingleQuestion.scss';
 
 export const singleQuestion=(props)=>{
 
-        let x=10;
-
         console.log('single question ', Object.keys(props.currentQuestion.answers));
-        //z variable determines checked answers color
+        //z var determines checked answers color
         let z=null;
-        //q variable determines color of correct answers table
-        let q=null;
 
         let answers=null;
-        let correctAnswers=null;
         if(!props.checkedAnswers){
              answers= props.currentQuestion.answers.map((answer, index)=><div class={"answerNotSelected"} key={index} onClick={()=>props.answerClicked(index)} >{answer}</div>)
         } else {
@@ -33,8 +28,6 @@ export const singleQuestion=(props)=>{
             }
             answers=answersArr;
         }
-
-       
 
         return (
             <div class="questionBox">

@@ -2,7 +2,7 @@ import React from 'react' ;
 import  {questionare} from './Questionare.js';
 import QuestionsAndResult from '../QuestionsAndResult/QuestionsAndResult';
 
-export const tachi=(props)=>{
+export const bradi=(props)=>{
     
         return (
             <div>
@@ -13,16 +13,14 @@ export const tachi=(props)=>{
     
 }
 
-export default tachi
-
-
+export default bradi
 
 // import React, { Component } from 'react';
 // import SingleQuestion from '../SingleQuestion/SingleQuestion';
 // import  {questionare} from './Questionare.js';
-// import './Tachi.scss';
+// import '../Tachi/Tachi.scss';
 
-// export class Tachi extends Component {
+// export class Bradi extends Component {
 //     state={
 //          questionsAndSelectedAnswers: [
 //             {
@@ -69,18 +67,12 @@ export default tachi
 //                         }
 //                     }
 
-//                     //checks which answers of a question user has chosen as correct
 //                     for(let i=0; i<this.state.questionsAndSelectedAnswers[z].selectedAnswers.length; i++){
 //                         if(y==this.state.questionsAndSelectedAnswers[z].selectedAnswers[i]){
 //                             b[y]=true;
 //                         }
 //                     }
 
-//                     //compares correct answers with answers that user has selected as correct
-//                     // true &  true = true  -  correct answer which user selected  -> displays green at the end of the test
-//                     // ture & null = false  -  correct answer which user didn't select  -> displays red at the end of the test
-//                     // null & true = false  -  wrong answer which user selected  -> displays red at the end of the test
-//                     // null & null = wrong answer which user didn't select -> displays non colorised at the end of the test
 //                     for(let i=0; i<questionare[z].answers.length; i++){
 //                         if(a[i]==true && b[i]==true){
 //                             c[i]=true;
@@ -198,5 +190,4 @@ export default tachi
 //     }
 // }
 
-// export default Tachi
-
+// export default Bradi

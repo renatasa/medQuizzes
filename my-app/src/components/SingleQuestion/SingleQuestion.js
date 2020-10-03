@@ -1,15 +1,19 @@
 import React from 'react' ;
 import './SingleQuestion.scss';
+import AVNRT from '../../assets/img/AVNRT.png'
 
 export const singleQuestion=(props)=>{
 
         console.log('single question ', Object.keys(props.currentQuestion.answers));
-        //z var determines checked answers color
+        //z var determines checked answers styling
         let z=null;
 
         let answers=null;
         if(!props.checkedAnswers){
-             answers= props.currentQuestion.answers.map((answer, index)=><div class={"answerNotSelected"} key={index} onClick={()=>props.answerClicked(index)} >{answer}</div>)
+             answers= <div>
+                       { props.currentQuestion.answers.map((answer, index)=><div class={"answerNotSelected"} key={index} onClick={()=>props.answerClicked(index)} >{answer}</div>) }
+                        <div class="arrow right" onClick={props.nextClicked}></div>
+                      </div>
         } else {
             let answersArr=[];
             
@@ -20,7 +24,7 @@ export const singleQuestion=(props)=>{
                 }else if(props.checkedAnswers[i]===false){
                     z="answerWrong";
                 }else if(props.checkedAnswers[i]===null){
-                    z="answerNotSelected"
+                    z="answerNeutral"
                 }
 
                 answersArr[i]=<div class={z} key={i} >{props.currentQuestion.answers[i]}</div>
@@ -31,9 +35,10 @@ export const singleQuestion=(props)=>{
 
         return (
             <div class="questionBox">
-                <div class="question">{props.currentQuestion.question}</div>
+                <div class="questionImg">{props.currentQuestion.img ? <img class="image" src={AVNRT} alt={props.currentQuestion.img}/> : null}</div>
+                <div class="questionText">{props.currentQuestion.question}</div>
                 <div>{answers}</div>
-                <div class="arrow right" onClick={props.nextClicked}></div>
+                
             </div>
         )
     

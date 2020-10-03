@@ -13,6 +13,15 @@
     width: 70%;
 }
 
+.questionText{
+    background-color: white;
+    border-radius: .5rem;
+}
+
+.image{
+    width: 100%;
+}
+
 .answerNotSelected{
     border: .1rem solid $color-green-very-light;
     border-radius: .2rem;
@@ -25,10 +34,17 @@
     background-color: $color-green-very-light;
     color: $color-green-dark ;
 }
+.answerNeutral{
+    border: .1rem solid $color-green-very-light;
+    border-radius: .2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
 
 .answerCorrect{
     border: .1rem solid $color-green-correct-answer;
     background-color: $color-green-correct-answer;
+    color: $color-grey-light-3;
     border-radius: .2rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -37,6 +53,7 @@
 .answerWrong{
     border: .1rem solid $color-wrong-answer;
     background-color: $color-wrong-answer;
+    color: $color-grey-light-3;
     border-radius: .2rem;
     margin-top: 1rem;
     margin-bottom: 1rem;   

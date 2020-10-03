@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import SingleQuestion from '../SingleQuestion/SingleQuestion';
-// import  {questionare} from './Questionare.js';
 import './QuestionsAndResult.scss';
 
 export class QuestionsAndResult extends Component {
@@ -144,37 +143,56 @@ export class QuestionsAndResult extends Component {
         console.log('this is testvar ', this.props.testvar);
         let questionOrResult=null;
         let correctAnswers = null;
+        let checkedAnswers = null;
 
         if(this.state.currentQuestionNumber<this.props.questionare.length){
-            questionOrResult= <SingleQuestion answerClicked={this.answerClicked} 
+            questionOrResult= <div>
+                                    <div class="questionNumber">{this.state.currentQuestionNumber +1} / {this.props.questionare.length}</div>
+                                    <SingleQuestion answerClicked={this.answerClicked} 
                                             nextClicked={this.nextQuestion} 
                                             key={this.state.currentQuestionNumber} 
                                             currentQuestion={this.props.questionare[this.state.currentQuestionNumber]} />
+                               </div>
+                                        
         } else {
            questionOrResult=[]; 
            correctAnswers=[];
+           checkedAnswers=[];
            for (let i=0; i<this.props.questionare.length; i++){
-               questionOrResult[i]=<SingleQuestion
-                                     checkedAnswers={this.state.checkedAnswers[i]} 
-                                     currentQuestion={this.props.questionare[i]} 
-                                     key={i}  
-                                    />
-                
-               correctAnswers[i]=<SingleQuestion 
-                                    checkedAnswers={this.state.correctAnswers[i]} 
-                                    currentQuestion={this.props.questionare[i]} 
-                                    key={i}  
-                                   />
-           }
+               checkedAnswers[i]=<div>
+                                        <SingleQuestion
+                                            checkedAnswers={this.state.checkedAnswers[i]} 
+                                            currentQuestion={this.props.questionare[i]} 
+                                            key={i}  
+                                        />
 
-           
+                                 </div>
+                
+               correctAnswers[i]=<div>
+                                        <SingleQuestion 
+                                            checkedAnswers={this.state.correctAnswers[i]} 
+                                            currentQuestion={this.props.questionare[i]} 
+                                            key={i}  
+                                        />
+                                </div>
+           }           
         }
 
         return (
-            <div class="questionare">
-                <div class="questionareBox">{questionOrResult}</div>
-                <div class="questionareBox">{correctAnswers}</div>
+            <div>
+                    <div class="questionareBox">{questionOrResult}</div>
+                    
+                    <div class="questionare">
+                        <div>
+                            {this.state.checkedAnswers.length ? <div class="questions">Your answers</div> : null}
+                            <div class="questionareBox">{checkedAnswers} </div>
+                        </div>
 
+                        <div>
+                            {this.state.checkedAnswers.length ? <div class="questions">Correct answers</div> : null}
+                            <div class="questionareBox">{correctAnswers} </div>
+                        </div>
+                    </div>
             </div>
         )
     }

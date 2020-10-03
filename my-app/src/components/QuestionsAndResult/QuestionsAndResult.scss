@@ -1,4 +1,19 @@
+@import '../../sass//variables';
+
 .questionare{
     display: flex;
+}
+
+.questions{
+    text-align: center;
+    font-size: $default-font-size-3;
+    margin-top: 2rem;
+}
+
+.questionNumber{
+    width: 100%;
+    height: 2rem;
+    text-align: center;
+    font-size: $default-font-size-3;
 }
 

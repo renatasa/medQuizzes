@@ -9,7 +9,10 @@ export const singleQuestion=(props)=>{
 
         let answers=null;
         if(!props.checkedAnswers){
-             answers= props.currentQuestion.answers.map((answer, index)=><div class={"answerNotSelected"} key={index} onClick={()=>props.answerClicked(index)} >{answer}</div>)
+             answers= <div>
+                       { props.currentQuestion.answers.map((answer, index)=><div class={"answerNotSelected"} key={index} onClick={()=>props.answerClicked(index)} >{answer}</div>) }
+                        <div class="arrow right" onClick={props.nextClicked}></div>
+                      </div>
         } else {
             let answersArr=[];
             
@@ -33,7 +36,7 @@ export const singleQuestion=(props)=>{
             <div class="questionBox">
                 <div class="question">{props.currentQuestion.question}</div>
                 <div>{answers}</div>
-                <div class="arrow right" onClick={props.nextClicked}></div>
+                
             </div>
         )
     

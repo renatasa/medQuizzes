@@ -4,7 +4,7 @@ import './SingleQuestion.scss';
 export const singleQuestion=(props)=>{
 
         console.log('single question ', Object.keys(props.currentQuestion.answers));
-        //z var determines checked answers color
+        //z var determines checked answers styling
         let z=null;
 
         let answers=null;

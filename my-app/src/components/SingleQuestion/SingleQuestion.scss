@@ -29,6 +29,7 @@
 .answerCorrect{
     border: .1rem solid $color-green-correct-answer;
     background-color: $color-green-correct-answer;
+    color: $color-grey-light-3;
     border-radius: .2rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -37,6 +38,7 @@
 .answerWrong{
     border: .1rem solid $color-wrong-answer;
     background-color: $color-wrong-answer;
+    color: $color-grey-light-3;
     border-radius: .2rem;
     margin-top: 1rem;
     margin-bottom: 1rem;   

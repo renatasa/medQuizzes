@@ -1,5 +1,6 @@
 import React from 'react' ;
 import './SingleQuestion.scss';
+import AVNRT from '../../assets/img/AVNRT.png'
 
 export const singleQuestion=(props)=>{
 
@@ -23,7 +24,7 @@ export const singleQuestion=(props)=>{
                 }else if(props.checkedAnswers[i]===false){
                     z="answerWrong";
                 }else if(props.checkedAnswers[i]===null){
-                    z="answerNotSelected"
+                    z="answerNeutral"
                 }
 
                 answersArr[i]=<div class={z} key={i} >{props.currentQuestion.answers[i]}</div>
@@ -34,7 +35,8 @@ export const singleQuestion=(props)=>{
 
         return (
             <div class="questionBox">
-                <div class="question">{props.currentQuestion.question}</div>
+                <div class="questionImg">{props.currentQuestion.img ? <img class="image" src={AVNRT} alt={props.currentQuestion.img}/> : null}</div>
+                <div class="questionText">{props.currentQuestion.question}</div>
                 <div>{answers}</div>
                 
             </div>

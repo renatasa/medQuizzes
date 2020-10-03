@@ -1,8 +1,7 @@
-
-
 export const  questionare=[
     {
         question: "Cardiac pacing is indicated when there is an established relationship between syncope and symptomatic bradycardia due to",
+        img: null,
         questionNumber: '0',
         answers: ["Sick sinus syndrome",
         "Intrinsic AV block", 
@@ -12,6 +11,7 @@ export const  questionare=[
     }, 
     {
         question: "Cardiac pacing is indicated in patients with intermittent/paroxysmal intrinsic third- or second-degree AV block (including AF with slow ventricular conduction), although there is no documentation of a correlation between symptoms and ECGs ",
+        img: null,
         questionNumber: '1',
         answers: ["True",
         "False"
@@ -20,6 +20,7 @@ export const  questionare=[
     }, 
     {
         question: " Select correct statements ",
+        img: null,
         questionNumber: '2',
         answers: ["Patients with bifascicular block and syncope are at higher risk of developing high-degree AV block.",
         "A prolonged HV interval >_70 ms, or induction of second- or third-degree AV block by pacing or by pharmacological stress (ajmaline, procainamide, or disopyramide), identifies a group at higher risk of developing AV block.",

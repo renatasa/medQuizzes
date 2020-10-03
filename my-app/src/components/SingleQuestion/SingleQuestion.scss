@@ -13,6 +13,15 @@
     width: 70%;
 }
 
+.questionText{
+    background-color: white;
+    border-radius: .5rem;
+}
+
+.image{
+    width: 100%;
+}
+
 .answerNotSelected{
     border: .1rem solid $color-green-very-light;
     border-radius: .2rem;
@@ -24,6 +33,12 @@
 .answerNotSelected:hover{
     background-color: $color-green-very-light;
     color: $color-green-dark ;
+}
+.answerNeutral{
+    border: .1rem solid $color-green-very-light;
+    border-radius: .2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .answerCorrect{

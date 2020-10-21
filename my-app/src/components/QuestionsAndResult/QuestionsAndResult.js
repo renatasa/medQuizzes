@@ -7,7 +7,8 @@ export class QuestionsAndResult extends Component {
          questionsAndSelectedAnswers: [
             {
                 currentQuestion: 0,
-                selectedAnswers: []
+                selectedAnswers: [], 
+                selectedAnswersColor: [false, false, false, false, false, false]
             }
          ],
          currentQuestionNumber: 0, 
@@ -88,17 +89,21 @@ export class QuestionsAndResult extends Component {
 
         }
     
-      
-        
-        this.setState({  currentQuestionNumber: this.state.currentQuestionNumber+1,
-            questionsAndSelectedAnswers : 
-            [...this.state.questionsAndSelectedAnswers, 
-                {currentQuestion: (this.state.currentQuestionNumber+1), selectedAnswers: []}
-            ]
+    if (this.state.currentQuestionNumber<this.props.questionare.length){
+      let x=[];
+      for (let i=0; i<this.props.questionare[this.state.currentQuestionNumber+1].answers.length; i++){
+          x.push(false);
+      }
 
-        }) ;
+      this.setState({  currentQuestionNumber: this.state.currentQuestionNumber+1,
+        questionsAndSelectedAnswers : 
+        [...this.state.questionsAndSelectedAnswers, 
+            {currentQuestion: (this.state.currentQuestionNumber+1), selectedAnswers: [], selectedAnswersColor:x}
+        ]
+
+    }) ;
+    }
        
-
         console.log("hello ", this.state);
 
    }
@@ -128,8 +133,10 @@ export class QuestionsAndResult extends Component {
 
                         if(!duplicates){
                             updatedObj[this.state.currentQuestionNumber].selectedAnswers.push(newAnswer);
+                            updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[newAnswer]=true;
                         } else {
                             updatedObj[this.state.currentQuestionNumber].selectedAnswers.splice(duplicatedAnswerIndex, 1);
+                            updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[newAnswer]=false;
                         }
                         
                         updatedObj[this.state.currentQuestionNumber].selectedAnswers.sort();
@@ -151,14 +158,16 @@ export class QuestionsAndResult extends Component {
                                     <SingleQuestion answerClicked={this.answerClicked} 
                                             nextClicked={this.nextQuestion} 
                                             key={this.state.currentQuestionNumber} 
-                                            currentQuestion={this.props.questionare[this.state.currentQuestionNumber]} />
+                                            currentQuestion={this.props.questionare[this.state.currentQuestionNumber]} 
+                                            selectedAnswersArr={this.state.questionsAndSelectedAnswers[this.state.currentQuestionNumber]}
+                                            selectedAnswersColor={this.state.questionsAndSelectedAnswers[this.state.currentQuestionNumber].selectedAnswersColor}/>
                                </div>
                                         
         } else {
            questionOrResult=[]; 
            correctAnswers=[];
            checkedAnswers=[];
-           for (let i=0; i<this.props.questionare.length; i++){
+           for (let i=0; i<this.props.questionare.length; i++){ 
                checkedAnswers[i]=<div>
                                         <SingleQuestion
                                             checkedAnswers={this.state.checkedAnswers[i]} 

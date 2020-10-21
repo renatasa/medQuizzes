@@ -1,19 +1,24 @@
-import React from 'react' ;
+import React from 'react';
 import './SingleQuestion.scss';
 import AVNRT from '../../assets/img/AVNRT.png'
 
 export const singleQuestion=(props)=>{
+    //k - answers array, if user selects answer - its background becomes green, if user deselects answer, its background becomes grey again
+    let k=[];
 
-        console.log('single question ', Object.keys(props.currentQuestion.answers));
-        //z var determines checked answers styling
         let z=null;
-
         let answers=null;
         if(!props.checkedAnswers){
-             answers= <div>
-                       { props.currentQuestion.answers.map((answer, index)=><div class={"answerNotSelected"} key={index} onClick={()=>props.answerClicked(index)} >{answer}</div>) }
-                        <div class="arrow right" onClick={props.nextClicked}></div>
-                      </div>
+
+            for (let i=0; i<props.currentQuestion.answers.length; i++){
+                k.push(<div class={props.selectedAnswersColor[i] ? "answerCorrect" : "answerNotSelected"} key={i} onClick={()=>props.answerClicked(i)} >{props.currentQuestion.answers[i]}</div>);
+            }
+
+        answers=<div>
+                    {k}
+                    <div class="arrow right" onClick={props.nextClicked}></div>
+                </div>
+
         } else {
             let answersArr=[];
             

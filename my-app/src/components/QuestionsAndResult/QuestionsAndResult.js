@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SingleQuestion from '../SingleQuestion/SingleQuestion';
 import './QuestionsAndResult.scss';
+import TestFinished from '../TestFinished/TestFinished';
 
 export class QuestionsAndResult extends Component {
     state={
@@ -13,9 +14,14 @@ export class QuestionsAndResult extends Component {
          ],
          currentQuestionNumber: 0, 
          checkedAnswers: [],
-         correctAnswers: []
+         correctAnswers: [],
+         showResults: false
     }
 
+    toggleResults=()=>{
+        console.log(' toggle results ');
+        this.setState({showResults: true})
+    }
     nextQuestion=()=>{
         console.log('next clicked');
 
@@ -155,6 +161,7 @@ export class QuestionsAndResult extends Component {
         let questionOrResult=null;
         let correctAnswers = null;
         let checkedAnswers = null;
+        let results=null;
 
         if(this.state.currentQuestionNumber<this.props.questionare.length){
             console.log('from main if statement');
@@ -194,11 +201,28 @@ export class QuestionsAndResult extends Component {
            }           
         }
 
+        
+        if (this.state.showResults){
+            results=  <div class="questionare">
+            <div>
+                {this.state.checkedAnswers.length ? <div class="questions">Your answers</div> : null}
+                <div class="questionareBox">{checkedAnswers} </div>
+            </div>
+
+            <div>
+                {this.state.checkedAnswers.length ? <div class="questions">Correct answers</div> : null}
+                <div class="questionareBox">{correctAnswers} </div>
+            </div>
+        </div>
+        } else  if(this.state.currentQuestionNumber>=this.props.questionare.length){
+            results=<TestFinished toggleResults={this.toggleResults}/>
+        }
+
         return (
             <div>
                     <div class="questionareBox">{questionOrResult}</div>
                     
-                    <div class="questionare">
+                    {/* <div class="questionare">
                         <div>
                             {this.state.checkedAnswers.length ? <div class="questions">Your answers</div> : null}
                             <div class="questionareBox">{checkedAnswers} </div>
@@ -208,7 +232,9 @@ export class QuestionsAndResult extends Component {
                             {this.state.checkedAnswers.length ? <div class="questions">Correct answers</div> : null}
                             <div class="questionareBox">{correctAnswers} </div>
                         </div>
-                    </div>
+                    </div> */}
+
+                    {results}
             </div>
         )
     }

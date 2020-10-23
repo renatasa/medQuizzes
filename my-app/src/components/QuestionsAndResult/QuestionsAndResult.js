@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SingleQuestion from '../SingleQuestion/SingleQuestion';
 import './QuestionsAndResult.scss';
+import TestFinished from '../TestFinished/TestFinished';
 
 export class QuestionsAndResult extends Component {
     state={
@@ -13,9 +14,14 @@ export class QuestionsAndResult extends Component {
          ],
          currentQuestionNumber: 0, 
          checkedAnswers: [],
-         correctAnswers: []
+         correctAnswers: [],
+         showResults: false
     }
 
+    toggleResults=()=>{
+        console.log(' toggle results ');
+        this.setState({showResults: true})
+    }
     nextQuestion=()=>{
         console.log('next clicked');
 
@@ -91,9 +97,12 @@ export class QuestionsAndResult extends Component {
     
     if (this.state.currentQuestionNumber<this.props.questionare.length){
       let x=[];
-      for (let i=0; i<this.props.questionare[this.state.currentQuestionNumber+1].answers.length; i++){
-          x.push(false);
+      if (this.state.currentQuestionNumber<this.props.questionare.length-1){
+        for (let i=0; i<this.props.questionare[this.state.currentQuestionNumber+1].answers.length; i++){
+            x.push(false);
+        }
       }
+      
 
       this.setState({  currentQuestionNumber: this.state.currentQuestionNumber+1,
         questionsAndSelectedAnswers : 
@@ -148,11 +157,14 @@ export class QuestionsAndResult extends Component {
     
     render() {
         console.log('this is testvar ', this.props.testvar);
+        console.log('current question number ', this.state.currentQuestionNumber);
         let questionOrResult=null;
         let correctAnswers = null;
         let checkedAnswers = null;
+        let results=null;
 
         if(this.state.currentQuestionNumber<this.props.questionare.length){
+            console.log('from main if statement');
             questionOrResult= <div>
                                     <div class="questionNumber">{this.state.currentQuestionNumber +1} / {this.props.questionare.length}</div>
                                     <SingleQuestion answerClicked={this.answerClicked} 
@@ -167,7 +179,9 @@ export class QuestionsAndResult extends Component {
            questionOrResult=[]; 
            correctAnswers=[];
            checkedAnswers=[];
+           console.log('from else statement');
            for (let i=0; i<this.props.questionare.length; i++){ 
+               console.log('checked answers for loop');
                checkedAnswers[i]=<div>
                                         <SingleQuestion
                                             checkedAnswers={this.state.checkedAnswers[i]} 
@@ -187,11 +201,28 @@ export class QuestionsAndResult extends Component {
            }           
         }
 
+        
+        if (this.state.showResults){
+            results=  <div class="questionare">
+            <div>
+                {this.state.checkedAnswers.length ? <div class="questions">Your answers</div> : null}
+                <div class="questionareBox">{checkedAnswers} </div>
+            </div>
+
+            <div>
+                {this.state.checkedAnswers.length ? <div class="questions">Correct answers</div> : null}
+                <div class="questionareBox">{correctAnswers} </div>
+            </div>
+        </div>
+        } else  if(this.state.currentQuestionNumber>=this.props.questionare.length){
+            results=<TestFinished toggleResults={this.toggleResults}/>
+        }
+
         return (
             <div>
                     <div class="questionareBox">{questionOrResult}</div>
                     
-                    <div class="questionare">
+                    {/* <div class="questionare">
                         <div>
                             {this.state.checkedAnswers.length ? <div class="questions">Your answers</div> : null}
                             <div class="questionareBox">{checkedAnswers} </div>
@@ -201,7 +232,9 @@ export class QuestionsAndResult extends Component {
                             {this.state.checkedAnswers.length ? <div class="questions">Correct answers</div> : null}
                             <div class="questionareBox">{correctAnswers} </div>
                         </div>
-                    </div>
+                    </div> */}
+
+                    {results}
             </div>
         )
     }

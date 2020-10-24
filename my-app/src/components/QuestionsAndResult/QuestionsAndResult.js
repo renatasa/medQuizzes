@@ -15,7 +15,8 @@ export class QuestionsAndResult extends Component {
          currentQuestionNumber: 0, 
          checkedAnswers: [],
          correctAnswers: [],
-         showResults: false
+         showResults: false,
+         score:[]
     }
 
     toggleResults=()=>{
@@ -34,8 +35,12 @@ export class QuestionsAndResult extends Component {
             let c=[];
             let d=[];
             let e=[];
+            let countScore=[];
+            //maximum score, if all chosen answers are correct
+            let maxCountScore=[];
+            let finalQuestionScore=[];
 
-
+            //loops through questions
             for(let z=0; z<this.props.questionare.length; z++){
                 //a[] - array of correct answers
                 a=[];
@@ -43,20 +48,22 @@ export class QuestionsAndResult extends Component {
                 b=[];
                 //c[] - checked answers array is created after comparison of array a and array b
                 c=[];
-               
-                //checks which answers of a question are correct by comparing with questionare's correct answers
+                maxCountScore[z]=0;
+                //loops through question answers, checks which answers of a question are correct by comparing with questionare's correct answers
                 for(let y=0; y<this.props.questionare[z].answers.length; y++){
                     a[y]=null;
                     b[y]=null;
+                   
                     console.log('a ',a);
                     console.log('b ',b);
                     for(let i=0; i<this.props.questionare[z].correctAnswer.length; i++){
                         if(y ==this.props.questionare[z].correctAnswer[i]){
                             a[y]=true;
+                            maxCountScore[z]=maxCountScore[z]+1;
                         }
                     }
 
-                    //checks which answers of a question user has chosen as correct
+                    //loops through answers, checks which answers of a question user has chosen as correct
                     for(let i=0; i<this.state.questionsAndSelectedAnswers[z].selectedAnswers.length; i++){
                         if(y==this.state.questionsAndSelectedAnswers[z].selectedAnswers[i]){
                             b[y]=true;
@@ -68,17 +75,29 @@ export class QuestionsAndResult extends Component {
                     // ture & null = false  -  correct answer which user didn't select  -> displays red at the end of the test
                     // null & true = false  -  wrong answer which user selected  -> displays red at the end of the test
                     // null & null = wrong answer which user didn't select -> displays non colorised at the end of the test
+                    countScore[z]=0;
                     for(let i=0; i<this.props.questionare[z].answers.length; i++){
                         if(a[i]==true && b[i]==true){
                             c[i]=true;
+                            countScore[z]=countScore[z]+1;
                         }else if( (a[i]==true &&  b[i]==null)  || (a[i]==null && b[i]==true) ){
                             c[i]=false;
+                            countScore[z]=countScore[z]-1;
                         }else if(a[i]==null  &&  b[i]==null){
                             c[i]=null
                         }
 
                     }
                     
+                    if(countScore[z]<0){
+                        countScore[z]=0
+                    }
+                    console.log('countScore[z] ', countScore[z]);
+                    finalQuestionScore[z]=countScore[z]/maxCountScore[z];
+
+                    console.log('reduce',
+                        finalQuestionScore.reduce((a, b) => a + b, 0)/finalQuestionScore.length*100
+                      )
                    
                 }
 
@@ -86,9 +105,11 @@ export class QuestionsAndResult extends Component {
                 e.push(a);
                 //pushes correct correct wrong and non selected answers to checked answers [user selected answers] array
                 d.push(c);
+                console.log('countScore ', countScore);
+                console.log('finalQuestionScore ', finalQuestionScore);
             }
             
-            this.setState({checkedAnswers : d, correctAnswers:e})
+            this.setState({checkedAnswers : d, correctAnswers:e, score: finalQuestionScore})
 
                 console.log('c from nex question answer checking ', c);
                 console.log('d from nex question answer checking ', d);
@@ -203,7 +224,9 @@ export class QuestionsAndResult extends Component {
 
         
         if (this.state.showResults){
-            results=  <div class="questionare">
+            results= <div> 
+            <div class="score">You scored {this.state.score.reduce((a, b) => a + b, 0)/this.state.score.length*100}%</div>
+            <div class="questionare">
             <div>
                 {this.state.checkedAnswers.length ? <div class="questions">Your answers</div> : null}
                 <div class="questionareBox">{checkedAnswers} </div>
@@ -213,6 +236,7 @@ export class QuestionsAndResult extends Component {
                 {this.state.checkedAnswers.length ? <div class="questions">Correct answers</div> : null}
                 <div class="questionareBox">{correctAnswers} </div>
             </div>
+        </div>
         </div>
         } else  if(this.state.currentQuestionNumber>=this.props.questionare.length){
             results=<TestFinished toggleResults={this.toggleResults}/>

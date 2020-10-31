@@ -23,3 +23,10 @@
     font-size: $default-font-size-3;
     margin-top: 1rem;
 }
+
+@media(max-width: 520px){
+    .questionare{
+        flex-direction: column;
+    }
+    
+}

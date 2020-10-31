@@ -4,7 +4,7 @@
 .testFinished{
     border: .2rem solid $color-grey-dark-2;
     border-radius: 1rem;
-    width: 30%;
+    width: 20rem;
     height: 10rem;
     margin: 0 auto;
 
@@ -18,14 +18,14 @@
     &-button{
         background-color: $color-grey-dark-3;
         cursor: pointer;
-        width: 40%;
+        width: 10rem;
         height: 2rem;
         border-radius: 2rem;
         text-align: center;
         // vertical-align: center;
         color: $color-grey-light-3;
         font-size: $default-font-size-3;
-        margin-left: 30%;
+        margin-left: 5rem;
         margin-top: 5%;
         padding-top: .4rem;
         transition: transform .1s;
@@ -35,3 +35,19 @@
         transform: scale(1.1);
       }
 }
+
+@media(max-width: 400px){
+    .testFinished{
+        width: 15rem;
+        height: 10rem;
+        margin: 0 auto;
+    }
+
+    .testFinished-button{
+        width: 10rem;
+        height: 2rem;
+        font-size: $default-font-size-3;
+        margin-left: 2.5rem;
+    }
+}
+

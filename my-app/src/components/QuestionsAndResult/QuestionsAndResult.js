@@ -225,7 +225,7 @@ export class QuestionsAndResult extends Component {
         
         if (this.state.showResults){
             results= <div> 
-            <div class="score">You scored {this.state.score.reduce((a, b) => a + b, 0)/this.state.score.length*100}%</div>
+            <div class="score">You scored {(this.state.score.reduce((a, b) => a + b, 0)/this.state.score.length*100).toFixed(0)}%</div>
             <div class="questionare">
             <div>
                 {this.state.checkedAnswers.length ? <div class="questions">Your answers</div> : null}
@@ -245,19 +245,6 @@ export class QuestionsAndResult extends Component {
         return (
             <div>
                     <div class="questionareBox">{questionOrResult}</div>
-                    
-                    {/* <div class="questionare">
-                        <div>
-                            {this.state.checkedAnswers.length ? <div class="questions">Your answers</div> : null}
-                            <div class="questionareBox">{checkedAnswers} </div>
-                        </div>
-
-                        <div>
-                            {this.state.checkedAnswers.length ? <div class="questions">Correct answers</div> : null}
-                            <div class="questionareBox">{correctAnswers} </div>
-                        </div>
-                    </div> */}
-
                     {results}
             </div>
         )

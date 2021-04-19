@@ -1,80 +1,78 @@
-@import '../../sass//variables';
+@import "../../sass//variables";
 
-.questionBox{
-    text-align: center;
-    color: $color-grey-dark-4;
-    font-size: $default-font-size-2;
-    border-radius: 1rem;
-    border: .1rem solid $color-grey-dark-2 ;
-    padding: 1rem;
-    margin-left: 12%;
-    margin-top: 2rem;
-    width: 70%;
+.questionBox {
+  text-align: center;
+  color: $color-grey-dark-4;
+  font-size: $default-font-size-2;
+  border-radius: 1rem;
+  border: 0.1rem solid $color-grey-dark-2;
+  padding: 1rem;
+  margin-left: 12%;
+  margin-top: 2rem;
+  width: 70%;
 }
 
-.questionText{
-    background-color: white;
-    border-radius: .5rem;
+.questionText {
+  background-color: white;
+  border-radius: 0.5rem;
 }
 
-.image{
-    width: 100%;
+.image {
+  width: 100%;
 }
 
-.answerNotSelected{
-    border: .1rem solid $color-green-very-light;
-    border-radius: .2rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    cursor: pointer; 
+.answerNotSelected {
+  border: 0.1rem solid $color-green-very-light;
+  border-radius: 0.2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
 }
 
-.answerNotSelected:hover{
-    background-color: $color-green-very-light;
-    color: $color-green-dark ;
+.answerNotSelected:hover {
+  background-color: $color-green-very-light;
+  color: $color-green-dark;
 }
-.answerNeutral{
-    border: .1rem solid $color-green-very-light;
-    border-radius: .2rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
-
-.answerCorrect{
-    border: .1rem solid $color-green-correct-answer;
-    background-color: $color-green-correct-answer;
-    color: $color-grey-light-3;
-    border-radius: .2rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+.answerNeutral {
+  border: 0.1rem solid $color-green-very-light;
+  border-radius: 0.2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
-.answerWrong{
-    border: .1rem solid $color-wrong-answer;
-    background-color: $color-wrong-answer;
-    color: $color-grey-light-3;
-    border-radius: .2rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;   
+.answerCorrect {
+  border: 0.1rem solid $color-green-correct-answer;
+  background-color: $color-green-correct-answer;
+  color: $color-grey-light-3;
+  border-radius: 0.2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.answerWrong {
+  border: 0.1rem solid $color-wrong-answer;
+  background-color: $color-wrong-answer;
+  color: $color-grey-light-3;
+  border-radius: 0.2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .arrow {
-    border: solid $color-grey-dark-2;
-    border-width: 0 .3rem .3rem 0;
-    display: inline-block;
-    padding: .3rem;
-    cursor: pointer;
+  border: solid $color-grey-dark-2;
+  border-width: 0 0.3rem 0.3rem 0;
+  display: inline-block;
+  padding: 0.3rem;
+  cursor: pointer;
+}
 
-  }
-  
-  .right {
-    transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-  }
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
 
-  @media(max-width: 850px){
-    .questionBox{
-        font-size: $default-font-size-4;
-    }
-    
+@media (max-width: 850px) {
+  .questionBox {
+    font-size: $default-font-size-4;
+  }
 }

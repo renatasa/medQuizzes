@@ -9,7 +9,7 @@ export class QuestionsAndResult extends Component {
       {
         currentQuestion: 0,
         selectedAnswers: [],
-        selectedAnswersColor: [false, false, false, false, false, false],
+        selectedAnswersColor: [],
       },
     ],
     currentQuestionNumber: 0,

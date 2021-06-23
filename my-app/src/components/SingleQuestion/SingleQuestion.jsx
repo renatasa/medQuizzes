@@ -3,52 +3,49 @@ import "./SingleQuestion.scss";
 import AVNRT from "../../assets/img/AVNRT.png";
 
 export const singleQuestion = (props) => {
-  //k - answers array, if user selects answer - its background becomes green, if user deselects answer, its background becomes grey again
-  let k = [];
+  // answers array - if user selects answer - its background becomes green, if user deselects answer, its background becomes grey again
 
-  let z = null;
   let answers = null;
   if (!props.checkedAnswers) {
-    for (let i = 0; i < props.currentQuestion.answers.length; i++) {
-      k.push(
+    let answersArray = props.currentQuestion.answers.map(
+      (singleAnswer, key) => (
         <div
           className={
-            props.selectedAnswersColor[i]
+            props.selectedAnswersColor[key]
               ? "answerCorrect"
               : "answerNotSelected"
           }
-          key={i}
-          onClick={() => props.answerClicked(i)}
+          key={key}
+          onClick={() => props.answerClicked(key)}
         >
-          {props.currentQuestion.answers[i]}
+          {singleAnswer}
         </div>
-      );
-    }
+      )
+    );
 
     answers = (
       <div>
-        {k}
+        {answersArray}
         <div className="arrow right" onClick={props.nextClicked}></div>
       </div>
     );
   } else {
-    let answersArr = [];
-
-    for (let i = 0; i < props.currentQuestion.answers.length; i++) {
+    let answerColor = (i) => {
       if (props.checkedAnswers[i] === true) {
-        z = "answerCorrect";
+        return "answerCorrect";
       } else if (props.checkedAnswers[i] === false) {
-        z = "answerWrong";
+        return "answerWrong";
       } else if (props.checkedAnswers[i] === null) {
-        z = "answerNeutral";
+        return "answerNeutral";
       }
+    };
 
-      answersArr[i] = (
-        <div className={z} key={i}>
-          {props.currentQuestion.answers[i]}
-        </div>
-      );
-    }
+    let answersArr = props.currentQuestion.answers.map((singleAnswer, key) => (
+      <div className={answerColor(key)} key={key}>
+        {singleAnswer}
+      </div>
+    ));
+
     answers = answersArr;
   }
 

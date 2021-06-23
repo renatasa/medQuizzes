@@ -147,6 +147,7 @@ export class QuestionsAndResult extends Component {
   };
 
   answerClicked = (newAnswer) => {
+    console.log(newAnswer)
     let duplicates = false;
     let duplicatedAnswerIndex = null;
 
@@ -196,7 +197,7 @@ export class QuestionsAndResult extends Component {
     if (this.state.currentQuestionNumber < this.props.questionare.length) {
       return (
         <div>
-          <div class="questionNumber">
+          <div className="questionNumber">
             {this.state.currentQuestionNumber + 1} /{" "}
             {this.props.questionare.length}
           </div>
@@ -256,7 +257,7 @@ export class QuestionsAndResult extends Component {
     ) {
       return (
         <div>
-          <div class="score">
+          <div className="score">
             You scored{" "}
             {(
               (this.state.score.reduce((a, b) => a + b, 0) /
@@ -265,19 +266,19 @@ export class QuestionsAndResult extends Component {
             ).toFixed(0)}
             %
           </div>
-          <div class="questionare">
+          <div className="questionare">
             <div>
               {this.state.checkedAnswers.length ? (
-                <div class="questions">Your answers</div>
+                <div className="questions">Your answers</div>
               ) : null}
-              <div class="questionareBox">{checkedAnswers} </div>
+              <div className="questionareBox">{checkedAnswers} </div>
             </div>
 
             <div>
               {this.state.checkedAnswers.length ? (
-                <div class="questions">Correct answers</div>
+                <div className="questions">Correct answers</div>
               ) : null}
-              <div class="questionareBox">{correctAnswers} </div>
+              <div className="questionareBox">{correctAnswers} </div>
             </div>
           </div>
         </div>
@@ -294,7 +295,7 @@ export class QuestionsAndResult extends Component {
   render() {
     return (
       <div>
-        <div class="questionareBox">{this.showQuestionOrResult()}</div>
+        <div className="questionareBox">{this.showQuestionOrResult()}</div>
         {this.generateResults()}
       </div>
     );

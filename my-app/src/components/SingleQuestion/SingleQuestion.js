@@ -12,7 +12,7 @@ export const singleQuestion = (props) => {
     for (let i = 0; i < props.currentQuestion.answers.length; i++) {
       k.push(
         <div
-          class={
+          className={
             props.selectedAnswersColor[i]
               ? "answerCorrect"
               : "answerNotSelected"
@@ -28,7 +28,7 @@ export const singleQuestion = (props) => {
     answers = (
       <div>
         {k}
-        <div class="arrow right" onClick={props.nextClicked}></div>
+        <div className="arrow right" onClick={props.nextClicked}></div>
       </div>
     );
   } else {
@@ -44,7 +44,7 @@ export const singleQuestion = (props) => {
       }
 
       answersArr[i] = (
-        <div class={z} key={i}>
+        <div className={z} key={i}>
           {props.currentQuestion.answers[i]}
         </div>
       );
@@ -53,13 +53,13 @@ export const singleQuestion = (props) => {
   }
 
   return (
-    <div class="questionBox">
-      <div class="questionImg">
+    <div className="questionBox">
+      <div className="questionImg">
         {props.currentQuestion.img ? (
-          <img class="image" src={AVNRT} alt={props.currentQuestion.img} />
+          <img className="image" src={AVNRT} alt={props.currentQuestion.img} />
         ) : null}
       </div>
-      <div class="questionText">{props.currentQuestion.question}</div>
+      <div className="questionText">{props.currentQuestion.question}</div>
       <div>{answers}</div>
     </div>
   );

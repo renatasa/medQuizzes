@@ -4,14 +4,14 @@ import { NavLink } from "react-router-dom";
 
 export const navbar = () => {
   return (
-    <div class="navbar">
+    <div className="navbar">
       <NavLink to="/tachicardia">
         {" "}
-        <div class="nav-button">Tachyarrhythmia</div>
+        <div className="nav-button">Tachyarrhythmia</div>
       </NavLink>
       <NavLink to="/bradicardia">
         {" "}
-        <div class="nav-button">Bradyarrhythmia</div>
+        <div className="nav-button">Bradyarrhythmia</div>
       </NavLink>
     </div>
   );

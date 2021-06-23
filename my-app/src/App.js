@@ -25,7 +25,7 @@ function App() {
         </Route>
       </Switch>
 
-      <p class="info">
+      <p className="info">
         This non-profit application is created for demonstration purposes only.
         Check out guidelines at www.escardio.org .{" "}
       </p>

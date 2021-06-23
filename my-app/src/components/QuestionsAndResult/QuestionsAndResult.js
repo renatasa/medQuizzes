@@ -154,22 +154,14 @@ export class QuestionsAndResult extends Component {
     let updatedObj = JSON.parse(
       JSON.stringify(this.state.questionsAndSelectedAnswers)
     );
-    for (
-      let i = 0;
-      i <
-      this.state.questionsAndSelectedAnswers[this.state.currentQuestionNumber]
-        .selectedAnswers.length;
-      i++
-    ) {
-      if (
-        newAnswer ==
-        this.state.questionsAndSelectedAnswers[this.state.currentQuestionNumber]
-          .selectedAnswers[i]
-      ) {
+
+    const answersArray=this.state.questionsAndSelectedAnswers[this.state.currentQuestionNumber].selectedAnswers;
+    answersArray.map((answer, key)=>{
+      if (answer===newAnswer){
         duplicates = true;
-        duplicatedAnswerIndex = i;
-      }
-    }
+        duplicatedAnswerIndex = key;
+      } 
+    })
 
     if (!duplicates) {
       updatedObj[this.state.currentQuestionNumber].selectedAnswers.push(
@@ -183,9 +175,11 @@ export class QuestionsAndResult extends Component {
         duplicatedAnswerIndex,
         1
       );
+
       updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
         newAnswer
       ] = false;
+
     }
 
     updatedObj[this.state.currentQuestionNumber].selectedAnswers.sort();

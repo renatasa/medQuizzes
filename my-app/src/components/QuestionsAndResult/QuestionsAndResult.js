@@ -192,14 +192,9 @@ export class QuestionsAndResult extends Component {
     this.setState({ questionsAndSelectedAnswers: updatedObj });
   };
 
-  render() {
-    let questionOrResult = null;
-    let correctAnswers = null;
-    let checkedAnswers = null;
-    let results = null;
-
+  showQuestionOrResult=()=>{
     if (this.state.currentQuestionNumber < this.props.questionare.length) {
-      questionOrResult = (
+      return (
         <div>
           <div class="questionNumber">
             {this.state.currentQuestionNumber + 1} /{" "}
@@ -226,34 +221,38 @@ export class QuestionsAndResult extends Component {
         </div>
       );
     } else {
-      questionOrResult = [];
-      correctAnswers = [];
-      checkedAnswers = [];
-      for (let i = 0; i < this.props.questionare.length; i++) {
-        checkedAnswers[i] = (
-          <div>
-            <SingleQuestion
-              checkedAnswers={this.state.checkedAnswers[i]}
-              currentQuestion={this.props.questionare[i]}
-              key={i}
-            />
-          </div>
-        );
-
-        correctAnswers[i] = (
-          <div>
-            <SingleQuestion
-              checkedAnswers={this.state.correctAnswers[i]}
-              currentQuestion={this.props.questionare[i]}
-              key={i}
-            />
-          </div>
-        );
-      }
+     
     }
+  }
 
+  generateResults=()=>{
+    let correctAnswers = [];
+    let checkedAnswers = [];
+    if (this.state.currentQuestionNumber >= this.props.questionare.length) {
+    for (let i = 0; i < this.props.questionare.length; i++) {
+      checkedAnswers[i] = (
+        <div>
+          <SingleQuestion
+            checkedAnswers={this.state.checkedAnswers[i]}
+            currentQuestion={this.props.questionare[i]}
+            key={i}
+          />
+        </div>
+      );
+
+      correctAnswers[i] = (
+        <div>
+          <SingleQuestion
+            checkedAnswers={this.state.correctAnswers[i]}
+            currentQuestion={this.props.questionare[i]}
+            key={i}
+          />
+        </div>
+      );
+    }
+    }
     if (this.state.showResults) {
-      results = (
+      return (
         <div>
           <div class="score">
             You scored{" "}
@@ -284,13 +283,15 @@ export class QuestionsAndResult extends Component {
     } else if (
       this.state.currentQuestionNumber >= this.props.questionare.length
     ) {
-      results = <TestFinished toggleResults={this.toggleResults} />;
+      return <TestFinished toggleResults={this.toggleResults} />;
     }
+  }
 
+  render() {
     return (
       <div>
-        <div class="questionareBox">{questionOrResult}</div>
-        {results}
+        <div class="questionareBox">{this.showQuestionOrResult()}</div>
+        {this.generateResults()}
       </div>
     );
   }

@@ -192,7 +192,7 @@ export class QuestionsAndResult extends Component {
     this.setState({ questionsAndSelectedAnswers: updatedObj });
   };
 
-  showQuestionOrResult=()=>{
+  showQuestionOrResult = () => {
     if (this.state.currentQuestionNumber < this.props.questionare.length) {
       return (
         <div>
@@ -221,37 +221,39 @@ export class QuestionsAndResult extends Component {
         </div>
       );
     } else {
-     
     }
-  }
+  };
 
-  generateResults=()=>{
+  generateResults = () => {
     let correctAnswers = [];
     let checkedAnswers = [];
     if (this.state.currentQuestionNumber >= this.props.questionare.length) {
-    for (let i = 0; i < this.props.questionare.length; i++) {
-      checkedAnswers[i] = (
-        <div>
-          <SingleQuestion
-            checkedAnswers={this.state.checkedAnswers[i]}
-            currentQuestion={this.props.questionare[i]}
-            key={i}
-          />
-        </div>
-      );
+      for (let i = 0; i < this.props.questionare.length; i++) {
+        checkedAnswers[i] = (
+          <div>
+            <SingleQuestion
+              checkedAnswers={this.state.checkedAnswers[i]}
+              currentQuestion={this.props.questionare[i]}
+              key={i}
+            />
+          </div>
+        );
 
-      correctAnswers[i] = (
-        <div>
-          <SingleQuestion
-            checkedAnswers={this.state.correctAnswers[i]}
-            currentQuestion={this.props.questionare[i]}
-            key={i}
-          />
-        </div>
-      );
+        correctAnswers[i] = (
+          <div>
+            <SingleQuestion
+              checkedAnswers={this.state.correctAnswers[i]}
+              currentQuestion={this.props.questionare[i]}
+              key={i}
+            />
+          </div>
+        );
+      }
     }
-    }
-    if (this.state.showResults) {
+    if (
+      this.state.currentQuestionNumber >= this.props.questionare.length &&
+      this.state.showResults
+    ) {
       return (
         <div>
           <div class="score">
@@ -280,12 +282,14 @@ export class QuestionsAndResult extends Component {
           </div>
         </div>
       );
-    } else if (
-      this.state.currentQuestionNumber >= this.props.questionare.length
+    }
+    if (
+      this.state.currentQuestionNumber >= this.props.questionare.length &&
+      !this.state.showResults
     ) {
       return <TestFinished toggleResults={this.toggleResults} />;
     }
-  }
+  };
 
   render() {
     return (

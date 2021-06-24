@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import SingleQuestion from "../SingleQuestion/SingleQuestion";
 import "./QuestionsAndResult.scss";
 import TestFinished from "../TestFinished/TestFinished";
+import { answerColors } from "../../service/constants";
 
 export class QuestionsAndResult extends Component {
   state = {
@@ -24,7 +25,7 @@ export class QuestionsAndResult extends Component {
       JSON.stringify(this.state.questionsAndSelectedAnswers)
     );
     updatedObj[0].selectedAnswersColor = this.props.questionare[0].answers.map(
-      (answer) => false
+      (answer) => "white"
     );
 
     this.setState({ questionsAndSelectedAnswers: updatedObj });
@@ -33,7 +34,8 @@ export class QuestionsAndResult extends Component {
   toggleResults = () => {
     this.setState({ showResults: true });
   };
-  nextQuestion = () => {
+
+  finishTestCalculateResults = () => {
     //cheking correct and wrong answers for previous question
     if (this.state.currentQuestionNumber == this.props.questionare.length - 1) {
       //    let correctAnswers=[];
@@ -58,7 +60,7 @@ export class QuestionsAndResult extends Component {
         maxCountScore[z] = 0;
         //loops through question answers, checks which answers of a question are correct by comparing with questionare's correct answers
         for (let y = 0; y < this.props.questionare[z].answers.length; y++) {
-          a[y] = null;
+          a[y] = "white";
           // b[y] = null;
 
           for (
@@ -67,24 +69,10 @@ export class QuestionsAndResult extends Component {
             i++
           ) {
             if (y == this.props.questionare[z].correctAnswer[i]) {
-              a[y] = true;
+              a[y] = "green";
               maxCountScore[z] = maxCountScore[z] + 1;
             }
           }
-
-          //loops through answers, checks which answers of a question user has chosen as correct
-          // for (
-          //   let i = 0;
-          //   i <
-          //   this.state.questionsAndSelectedAnswers[z].selectedAnswers.length;
-          //   i++
-          // ) {
-          //   if (
-          //     y == this.state.questionsAndSelectedAnswers[z].selectedAnswers[i]
-          //   ) {
-          //     b[y] = true;
-          //   }
-          // }
 
           b = this.state.questionsAndSelectedAnswers[z].selectedAnswersColor;
           console.log("b ", b);
@@ -96,17 +84,17 @@ export class QuestionsAndResult extends Component {
           // null & null = wrong answer which user didn't select -> displays non colorised at the end of the test
           countScore[z] = 0;
           for (let i = 0; i < this.props.questionare[z].answers.length; i++) {
-            if (a[i] == true && b[i] == true) {
-              c[i] = true;
+            if (a[i] == "green" && b[i] == "green") {
+              c[i] = "green";
               countScore[z] = countScore[z] + 1;
             } else if (
-              (a[i] == true && b[i] == false) ||
-              (a[i] == null && b[i] == true)
+              (a[i] == "green" && b[i] == "white") ||
+              (a[i] == "white" && b[i] == "green")
             ) {
-              c[i] = false;
+              c[i] = "red";
               countScore[z] = countScore[z] - 1;
-            } else if (a[i] == null && b[i] == false) {
-              c[i] = null;
+            } else if (a[i] == "white" && b[i] == "white") {
+              c[i] = "white";
             }
           }
 
@@ -128,23 +116,19 @@ export class QuestionsAndResult extends Component {
         score: finalQuestionScore,
       });
     }
+  };
 
+  moveToNextQuestion = () => {
+    // checks if test is not finished
+    let x = [];
     if (this.state.currentQuestionNumber < this.props.questionare.length) {
-      let x = [];
       if (
         this.state.currentQuestionNumber <
         this.props.questionare.length - 1
       ) {
-        for (
-          let i = 0;
-          i <
-          this.props.questionare[this.state.currentQuestionNumber + 1].answers
-            .length;
-          i++
-        ) {
-          x.push(false);
-          console.log(x);
-        }
+        x = this.props.questionare[
+          this.state.currentQuestionNumber + 1
+        ].answers.map((answer) => "white");
       }
 
       this.setState({
@@ -161,6 +145,13 @@ export class QuestionsAndResult extends Component {
     }
   };
 
+  nextQuestion = () => {
+    // if this is last question
+    this.finishTestCalculateResults();
+    // if this is not last question
+    this.moveToNextQuestion();
+  };
+
   answerClicked = (newAnswer) => {
     let updatedObj = JSON.parse(
       JSON.stringify(this.state.questionsAndSelectedAnswers)
@@ -168,10 +159,13 @@ export class QuestionsAndResult extends Component {
 
     updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
       newAnswer
-    ] =
-      !updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
-        newAnswer
-      ];
+    ] === "white"
+      ? (updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
+          newAnswer
+        ] = "green")
+      : (updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
+          newAnswer
+        ] = "white");
 
     this.setState({ questionsAndSelectedAnswers: updatedObj });
   };

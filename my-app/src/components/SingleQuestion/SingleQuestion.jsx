@@ -11,7 +11,7 @@ export const singleQuestion = (props) => {
       (singleAnswer, key) => (
         <div
           className={
-            props.selectedAnswersColor[key]
+            props.selectedAnswersColor[key]=="green"
               ? "answerCorrect"
               : "answerNotSelected"
           }
@@ -31,11 +31,11 @@ export const singleQuestion = (props) => {
     );
   } else {
     let answerColor = (i) => {
-      if (props.checkedAnswers[i] === true) {
+      if (props.checkedAnswers[i] === "green") {
         return "answerCorrect";
-      } else if (props.checkedAnswers[i] === false) {
+      } else if (props.checkedAnswers[i] === "red") {
         return "answerWrong";
-      } else if (props.checkedAnswers[i] === null) {
+      } else if (props.checkedAnswers[i] === "white") {
         return "answerNeutral";
       }
     };

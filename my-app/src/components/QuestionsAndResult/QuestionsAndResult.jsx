@@ -19,6 +19,17 @@ export class QuestionsAndResult extends Component {
     score: [],
   };
 
+  componentDidMount() {
+    let updatedObj = JSON.parse(
+      JSON.stringify(this.state.questionsAndSelectedAnswers)
+    );
+    updatedObj[0].selectedAnswersColor = this.props.questionare[0].answers.map(
+      (answer) => false
+    );
+
+    this.setState({ questionsAndSelectedAnswers: updatedObj });
+  }
+
   toggleResults = () => {
     this.setState({ showResults: true });
   };
@@ -48,7 +59,7 @@ export class QuestionsAndResult extends Component {
         //loops through question answers, checks which answers of a question are correct by comparing with questionare's correct answers
         for (let y = 0; y < this.props.questionare[z].answers.length; y++) {
           a[y] = null;
-          b[y] = null;
+          // b[y] = null;
 
           for (
             let i = 0;
@@ -62,18 +73,21 @@ export class QuestionsAndResult extends Component {
           }
 
           //loops through answers, checks which answers of a question user has chosen as correct
-          for (
-            let i = 0;
-            i <
-            this.state.questionsAndSelectedAnswers[z].selectedAnswers.length;
-            i++
-          ) {
-            if (
-              y == this.state.questionsAndSelectedAnswers[z].selectedAnswers[i]
-            ) {
-              b[y] = true;
-            }
-          }
+          // for (
+          //   let i = 0;
+          //   i <
+          //   this.state.questionsAndSelectedAnswers[z].selectedAnswers.length;
+          //   i++
+          // ) {
+          //   if (
+          //     y == this.state.questionsAndSelectedAnswers[z].selectedAnswers[i]
+          //   ) {
+          //     b[y] = true;
+          //   }
+          // }
+
+          b = this.state.questionsAndSelectedAnswers[z].selectedAnswersColor;
+          console.log("b ", b);
 
           //compares correct answers with answers that user has selected as correct
           // true &  true = true  -  correct answer which user selected  -> displays green at the end of the test
@@ -86,12 +100,12 @@ export class QuestionsAndResult extends Component {
               c[i] = true;
               countScore[z] = countScore[z] + 1;
             } else if (
-              (a[i] == true && b[i] == null) ||
+              (a[i] == true && b[i] == false) ||
               (a[i] == null && b[i] == true)
             ) {
               c[i] = false;
               countScore[z] = countScore[z] - 1;
-            } else if (a[i] == null && b[i] == null) {
+            } else if (a[i] == null && b[i] == false) {
               c[i] = null;
             }
           }
@@ -129,6 +143,7 @@ export class QuestionsAndResult extends Component {
           i++
         ) {
           x.push(false);
+          console.log(x);
         }
       }
 
@@ -147,42 +162,16 @@ export class QuestionsAndResult extends Component {
   };
 
   answerClicked = (newAnswer) => {
-    console.log(newAnswer)
-    let duplicates = false;
-    let duplicatedAnswerIndex = null;
-
     let updatedObj = JSON.parse(
       JSON.stringify(this.state.questionsAndSelectedAnswers)
     );
 
-    const answersArray=this.state.questionsAndSelectedAnswers[this.state.currentQuestionNumber].selectedAnswers;
-    answersArray.map((answer, key)=>{
-      if (answer===newAnswer){
-        duplicates = true;
-        duplicatedAnswerIndex = key;
-      } 
-    })
-
-    if (!duplicates) {
-      updatedObj[this.state.currentQuestionNumber].selectedAnswers.push(
+    updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
+      newAnswer
+    ] =
+      !updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
         newAnswer
-      );
-      updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
-        newAnswer
-      ] = true;
-    } else {
-      updatedObj[this.state.currentQuestionNumber].selectedAnswers.splice(
-        duplicatedAnswerIndex,
-        1
-      );
-
-      updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
-        newAnswer
-      ] = false;
-
-    }
-
-    updatedObj[this.state.currentQuestionNumber].selectedAnswers.sort();
+      ];
 
     this.setState({ questionsAndSelectedAnswers: updatedObj });
   };
@@ -287,6 +276,7 @@ export class QuestionsAndResult extends Component {
   };
 
   render() {
+    console.log(this.state.questionsAndSelectedAnswers);
     return (
       <div>
         <div className="questionareBox">{this.showQuestionOrResult()}</div>

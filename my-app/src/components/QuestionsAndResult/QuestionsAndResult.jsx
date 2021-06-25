@@ -36,23 +36,23 @@ export class QuestionsAndResult extends Component {
   };
 
   finishTestCalculateResults = () => {
-    //cheking correct and wrong answers for previous question
+    //cheking if last question is reached by user
     if (
       this.state.currentQuestionNumber ===
       this.props.questionare.length - 1
     ) {
-      //    let correctAnswers=[];
-      let actuallyCorrectAnswers = []; // - array of actually correct and incorrect answers for single question
-      let answersUserChose = []; // - array of answers that user chose as correct and incorrect for single question
-      let checkedAnswers = []; // - checked answers array is created after comparison of actuallyCorrectAnswers and answersUserChose for single question
-      let checkedQuestionsUser = []; // - checked answers array is created after comparison of actuallyCorrectAnswers and answersUserChose for all questions
       let checkedQuestions = []; //- actually correct answers for all questions
-      let userScore = []; // score user made for single question
-      let maxScore = []; // maximum score, if all chosen answers for single question are correct
-      let finalQuestionScore = [];
+      let checkedQuestionsUser = []; // - checked answers array is created after comparison of actuallyCorrectAnswers and answersUserChose for all questions
+      let userScore = []; // array of scores user gained for each of questions
+      let maxScore = []; // array of maximum scores, if all chosen answers for each question are correct
+      let finalQuestionScore = []; // userScore / maxScore for a single question
 
       //loops through questions
       for (let z = 0; z < this.props.questionare.length; z++) {
+        let actuallyCorrectAnswers = []; // - array of actually correct and incorrect answers for single question
+        let answersUserChose = []; // - array of answers that user chose as correct and incorrect for single question
+        let checkedAnswers = []; // - checked answers array is created after comparison of actuallyCorrectAnswers and answersUserChose for single question
+
         maxScore[z] = 0;
         //loops through question answers, checks which answers of a question are correct by comparing with questionare's correct answers
         for (let y = 0; y < this.props.questionare[z].answers.length; y++) {
@@ -68,44 +68,43 @@ export class QuestionsAndResult extends Component {
               maxScore[z] = maxScore[z] + 1;
             }
           }
-
-          answersUserChose =
-            this.state.questionsAndSelectedAnswers[z].selectedAnswersColor;
-
-          // compares correct answers with answers that user has selected as correct
-          // correct &  correct = currect  -  correct answer which user selected  -> displays green at the end of the test
-          // correct & neutral = incorrect  -  correct answer which user didn't select  -> displays red at the end of the test
-          // nuutral & correct = incorrect  -  wrong answer which user selected  -> displays red at the end of the test
-          // neutraul & neutral = neutral - wrong answer which user didn't select -> displays non colorised at the end of the test
-          userScore[z] = 0;
-          for (let i = 0; i < this.props.questionare[z].answers.length; i++) {
-            if (
-              actuallyCorrectAnswers[i] === answerColors.correct &&
-              answersUserChose[i] === answerColors.correct
-            ) {
-              checkedAnswers[i] = answerColors.correct;
-              userScore[z] = userScore[z] + 1;
-            } else if (
-              (actuallyCorrectAnswers[i] === answerColors.correct &&
-                answersUserChose[i] === answerColors.neutral) ||
-              (actuallyCorrectAnswers[i] === answerColors.neutral &&
-                answersUserChose[i] === answerColors.correct)
-            ) {
-              checkedAnswers[i] = answerColors.incorrect;
-              userScore[z] = userScore[z] - 1;
-            } else if (
-              actuallyCorrectAnswers[i] === answerColors.neutral &&
-              answersUserChose[i] === answerColors.neutral
-            ) {
-              checkedAnswers[i] = answerColors.neutral;
-            }
-          }
-
-          if (userScore[z] < 0) {
-            userScore[z] = 0;
-          }
-          finalQuestionScore[z] = userScore[z] / maxScore[z];
         }
+
+        answersUserChose =
+          this.state.questionsAndSelectedAnswers[z].selectedAnswersColor;
+        // compares correct answers with answers that user has selected as correct
+        // correct &  correct = currect  -  correct answer which user selected  -> displays green at the end of the test
+        // correct & neutral = incorrect  -  correct answer which user didn't select  -> displays red at the end of the test
+        // nuutral & correct = incorrect  -  wrong answer which user selected  -> displays red at the end of the test
+        // neutraul & neutral = neutral - wrong answer which user didn't select -> displays non colorised at the end of the test
+        userScore[z] = 0;
+        for (let i = 0; i < this.props.questionare[z].answers.length; i++) {
+          if (
+            actuallyCorrectAnswers[i] === answerColors.correct &&
+            answersUserChose[i] === answerColors.correct
+          ) {
+            checkedAnswers[i] = answerColors.correct;
+            userScore[z] = userScore[z] + 1;
+          } else if (
+            (actuallyCorrectAnswers[i] === answerColors.correct &&
+              answersUserChose[i] === answerColors.neutral) ||
+            (actuallyCorrectAnswers[i] === answerColors.neutral &&
+              answersUserChose[i] === answerColors.correct)
+          ) {
+            checkedAnswers[i] = answerColors.incorrect;
+            userScore[z] = userScore[z] - 1;
+          } else if (
+            actuallyCorrectAnswers[i] === answerColors.neutral &&
+            answersUserChose[i] === answerColors.neutral
+          ) {
+            checkedAnswers[i] = answerColors.neutral;
+          }
+        }
+
+        if (userScore[z] < 0) {
+          userScore[z] = 0;
+        }
+        finalQuestionScore[z] = userScore[z] / maxScore[z];
 
         //pushes correct and incorrect answers  to correct answers array
         checkedQuestions.push(actuallyCorrectAnswers);
@@ -170,7 +169,6 @@ export class QuestionsAndResult extends Component {
       : (updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
           newAnswer
         ] = answerColors.neutral);
-    console.log("173");
     changeBackgroundColor(
       this.state.questionsAndSelectedAnswers,
       this.state.currentQuestionNumber
@@ -294,7 +292,6 @@ export class QuestionsAndResult extends Component {
   };
 
   render() {
-    console.log(this.state.questionsAndSelectedAnswers);
     return (
       <div>
         <div className="questionareBox">{this.showQuestion()}</div>

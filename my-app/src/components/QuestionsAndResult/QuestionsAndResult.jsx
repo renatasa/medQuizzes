@@ -7,11 +7,14 @@ import { answerColors } from "../../service/constants";
 
 export class QuestionsAndResult extends Component {
   state = {
+    // questionsAndSelectedAnswers: [
+    //   {
+    //     currentQuestion: 0,
+    //     selectedAnswersColor: [],
+    //   },
+    // ],
     questionsAndSelectedAnswers: [
-      {
-        currentQuestion: 0,
-        selectedAnswersColor: [],
-      },
+     
     ],
     currentQuestionNumber: 0,
     checkedAnswers: [],
@@ -24,7 +27,7 @@ export class QuestionsAndResult extends Component {
     let updatedObj = JSON.parse(
       JSON.stringify(this.state.questionsAndSelectedAnswers)
     );
-    updatedObj[0].selectedAnswersColor = this.props.questionare[0].answers.map(
+    updatedObj[0]= this.props.questionare[0].answers.map(
       (answer) => answerColors.neutral
     );
 
@@ -71,7 +74,7 @@ export class QuestionsAndResult extends Component {
         }
 
         answersUserChose =
-          this.state.questionsAndSelectedAnswers[z].selectedAnswersColor;
+          this.state.questionsAndSelectedAnswers[z];
         // compares correct answers with answers that user has selected as correct
         // correct &  correct = currect  -  correct answer which user selected  -> displays green at the end of the test
         // correct & neutral = incorrect  -  correct answer which user didn't select  -> displays red at the end of the test
@@ -134,15 +137,13 @@ export class QuestionsAndResult extends Component {
         ].answers.map((answer) => answerColors.neutral);
       }
 
+      let updatedArr=[...this.state.questionsAndSelectedAnswers];
+      updatedArr.push(answerBackgroundColors)
+
       this.setState({
         currentQuestionNumber: this.state.currentQuestionNumber + 1,
         questionsAndSelectedAnswers: [
-          ...this.state.questionsAndSelectedAnswers,
-          {
-            currentQuestion: this.state.currentQuestionNumber + 1,
-
-            selectedAnswersColor: answerBackgroundColors,
-          },
+          ...updatedArr
         ],
       });
     }
@@ -160,19 +161,19 @@ export class QuestionsAndResult extends Component {
       JSON.stringify(this.state.questionsAndSelectedAnswers)
     );
 
-    updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
+    updatedObj[this.state.currentQuestionNumber][
       newAnswer
     ] === answerColors.neutral
-      ? (updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
+      ? (updatedObj[this.state.currentQuestionNumber][
           newAnswer
         ] = answerColors.correct)
-      : (updatedObj[this.state.currentQuestionNumber].selectedAnswersColor[
+      : (updatedObj[this.state.currentQuestionNumber][
           newAnswer
         ] = answerColors.neutral);
-    changeBackgroundColor(
-      this.state.questionsAndSelectedAnswers,
-      this.state.currentQuestionNumber
-    );
+    // changeBackgroundColor(
+    //   this.state.questionsAndSelectedAnswers,
+    //   this.state.currentQuestionNumber
+    // );
     // let updatedObj = changeBackgroundColor(
     //   this.state.questionsAndSelectedAnswers,
     //   this.state.currentQuestionNumber,
@@ -205,7 +206,7 @@ export class QuestionsAndResult extends Component {
             selectedAnswersColor={
               this.state.questionsAndSelectedAnswers[
                 this.state.currentQuestionNumber
-              ].selectedAnswersColor
+              ]
             }
           />
         </div>

@@ -2,6 +2,8 @@ import React from "react";
 import "./SingleQuestion.scss";
 import AVNRT from "../../assets/img/AVNRT.png";
 
+// answers array - if user selects answer - its background becomes green, if user deselects answer, its background becomes white
+// in final results section - false answers that user selected as correct have red background
 const answerColor = (answer) => {
   switch (answer) {
     case "green":
@@ -28,8 +30,6 @@ const createAnswerArray = (answersArray, colorOfAnswer, answerClicked) => {
 };
 
 export const singleQuestion = (props) => {
-  // answers array - if user selects answer - its background becomes green, if user deselects answer, its background becomes grey again
-
   let answers = null;
   if (!props.checkedAnswers && props.selectedAnswersArr) {
     let answersArray = createAnswerArray(

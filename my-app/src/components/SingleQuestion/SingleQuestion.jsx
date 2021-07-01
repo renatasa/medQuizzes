@@ -2,25 +2,40 @@ import React from "react";
 import "./SingleQuestion.scss";
 import AVNRT from "../../assets/img/AVNRT.png";
 
-export const singleQuestion = (props) => {
-  // answers array - if user selects answer - its background becomes green, if user deselects answer, its background becomes grey again
+// answers array - if user selects answer - its background becomes green, if user deselects answer, its background becomes white
+// in final results section - false answers that user selected as correct have red background
+const answerColor = (answer) => {
+  switch (answer) {
+    case "green":
+      return "answerCorrect";
+    case "red":
+      return "answerWrong";
+    case "white":
+      return "answerNeutral";
+    default:
+      break;
+  }
+};
 
+const createAnswerArray = (answersArray, colorOfAnswer, answerClicked) => {
+  return answersArray.map((singleAnswer, key) => (
+    <div
+      className={answerColor(colorOfAnswer[key])}
+      key={key}
+      onClick={() => answerClicked(key)}
+    >
+      {singleAnswer}
+    </div>
+  ));
+};
+
+export const singleQuestion = (props) => {
   let answers = null;
-  if (!props.checkedAnswers) {
-    let answersArray = props.currentQuestion.answers.map(
-      (singleAnswer, key) => (
-        <div
-          className={
-            props.selectedAnswersColor[key]=="green"
-              ? "answerCorrect"
-              : "answerNotSelected"
-          }
-          key={key}
-          onClick={() => props.answerClicked(key)}
-        >
-          {singleAnswer}
-        </div>
-      )
+  if (!props.checkedAnswers && props.selectedAnswersArr) {
+    let answersArray = createAnswerArray(
+      props.currentQuestion.answers,
+      props.selectedAnswersArr,
+      props.answerClicked
     );
 
     answers = (
@@ -29,22 +44,14 @@ export const singleQuestion = (props) => {
         <div className="arrow right" onClick={props.nextClicked}></div>
       </div>
     );
-  } else {
-    let answerColor = (i) => {
-      if (props.checkedAnswers[i] === "green") {
-        return "answerCorrect";
-      } else if (props.checkedAnswers[i] === "red") {
-        return "answerWrong";
-      } else if (props.checkedAnswers[i] === "white") {
-        return "answerNeutral";
-      }
-    };
+  }
 
-    let answersArr = props.currentQuestion.answers.map((singleAnswer, key) => (
-      <div className={answerColor(key)} key={key}>
-        {singleAnswer}
-      </div>
-    ));
+  if (props.checkedAnswers) {
+    let answersArr = createAnswerArray(
+      props.currentQuestion.answers,
+      props.checkedAnswers,
+      () => {}
+    );
 
     answers = answersArr;
   }

@@ -1,10 +1,10 @@
-import React from "react";
 import "./SingleQuestion.scss";
 import AVNRT from "../../assets/img/AVNRT.png";
+import { iQuestion } from "../../types/index";
 
-// answers array - if user selects answer - its background becomes green, if user deselects answer, its background becomes white
+// answers array - if user selects answer - its background changes color (e.g. becomes green), if user deselects answer, its background changes color to previous one (e.g. white)
 // in final results section - false answers that user selected as correct have red background
-const answerColor = (answer) => {
+const answerColor = (answer: string) => {
   switch (answer) {
     case "green":
       return "answerCorrect";
@@ -17,7 +17,7 @@ const answerColor = (answer) => {
   }
 };
 
-const createAnswerArray = (answersArray, colorOfAnswer, answerClicked) => {
+const createAnswerArray = (answersArray: string[], colorOfAnswer: string[], answerClicked: (newAnswer: number) => void) => {
   return answersArray.map((singleAnswer, key) => (
     <div
       className={answerColor(colorOfAnswer[key])}
@@ -29,7 +29,10 @@ const createAnswerArray = (answersArray, colorOfAnswer, answerClicked) => {
   ));
 };
 
-export const singleQuestion = (props) => {
+export const singleQuestion = (props: {
+  answerClicked?: (answerNumber?: number) => void, nextClicked?: () => void,
+  currentQuestion: iQuestion, selectedAnswersArr?: string[], selectedAnswersColor?: string[], checkedAnswers?: string[]
+}) => {
   let answers = null;
   if (!props.checkedAnswers && props.selectedAnswersArr) {
     let answersArray = createAnswerArray(
@@ -50,7 +53,7 @@ export const singleQuestion = (props) => {
     let answersArr = createAnswerArray(
       props.currentQuestion.answers,
       props.checkedAnswers,
-      () => {}
+      () => { }
     );
 
     answers = answersArr;

@@ -1,10 +1,21 @@
-import React, { Component } from "react";
+import React from "react";
 import SingleQuestion from "../SingleQuestion/SingleQuestion";
 import "./QuestionsAndResult.scss";
 import TestFinished from "../TestFinished/TestFinished";
-import { answerColors } from "../../service/constants";
+import { answerColors } from "../../constants/constants";
+import { iQuestion } from '../../types/index';
 
-export class QuestionsAndResult extends Component {
+type MyProps = { questionare: iQuestion[] };
+type MyState = {
+  questionsAndSelectedAnswers: [][],
+  currentQuestionNumber: number,
+  checkedAnswers: [][],
+  correctAnswers: [][],
+  showResults: boolean,
+  score: number[]
+};
+
+export class QuestionsAndResult extends React.Component<MyProps, MyState>  {
   state = {
     questionsAndSelectedAnswers: [],
     currentQuestionNumber: 0,
@@ -15,7 +26,7 @@ export class QuestionsAndResult extends Component {
   };
 
   componentDidMount() {
-    let updatedObj=[];
+    let updatedObj = [];
     updatedObj[0] = this.props.questionare[0].answers.map(
       (_) => answerColors.neutral
     );
@@ -27,18 +38,18 @@ export class QuestionsAndResult extends Component {
     this.setState({ showResults: true });
   };
 
-  calculateScores=(userScore, maxScore )=>{
+  calculateScores = (userScore: number, maxScore: number) => {
     if (userScore < 0) {
       userScore = 0;
     }
-      return  userScore / maxScore;
+    return userScore / maxScore;
   }
 
   checkAnswers = (
-    selectedQuestion,
-    actuallyCorrectAnswersSingleQuestion ,
-    userAnswersSingleQuestion, 
-    maxScoreForThisQuestion
+    selectedQuestion: iQuestion,
+    actuallyCorrectAnswersSingleQuestion: string[],
+    userAnswersSingleQuestion: string[],
+    maxScoreForThisQuestion: number
   ) => {
     let checkedAnswers = []; // - checked answers array is created after comparison of actuallyCorrectAnswers and userAnswersSingleQuestion for single question
     let userScoreForThisQuestion = 0;
@@ -48,7 +59,7 @@ export class QuestionsAndResult extends Component {
     // neutral & correct = incorrect  -  wrong answer which user selected  -> displays red at the end of the test
     // neutral & neutral = neutral - wrong answer which user didn't select -> displays non colorised at the end of the test
 
-    selectedQuestion.answers.forEach((_, i)=>{
+    selectedQuestion.answers.forEach((_: string, i: number) => {
       if (
         actuallyCorrectAnswersSingleQuestion[i] === answerColors.correct &&
         userAnswersSingleQuestion[i] === answerColors.correct
@@ -65,7 +76,7 @@ export class QuestionsAndResult extends Component {
       if (
         actuallyCorrectAnswersSingleQuestion[i] === answerColors.correct &&
         userAnswersSingleQuestion[i] === answerColors.neutral
-        
+
       ) {
         checkedAnswers[i] = answerColors.neutral;
         userScoreForThisQuestion -= 1;
@@ -79,24 +90,26 @@ export class QuestionsAndResult extends Component {
 
     })
 
-    const finalScore=this.calculateScores(userScoreForThisQuestion, maxScoreForThisQuestion)
+    const finalScore = this.calculateScores(userScoreForThisQuestion, maxScoreForThisQuestion)
     return {
       checkedAnswers: checkedAnswers,
-      finalQuestionScore:finalScore
+      finalQuestionScore: finalScore
     };
   };
 
-  loopThroughAnswers=(question)=>{
+  loopThroughAnswers = (question: iQuestion) => {
     let actuallyCorrectAnswers = []; // - array of actually correct and incorrect answers for single question
-   
-    let maxScore= 0; // maximum score for a single question, if all chosen answers are correct
+
+    let maxScore = 0; // maximum score for a single question, if all chosen answers are correct
 
     // take single answer
     question.answers.forEach((_, answerIndex) => {
+      // set answer's default color to neutral
       actuallyCorrectAnswers[answerIndex] = answerColors.neutral;
-      
+
       // check if that answer is correct
       question.correctAnswer.forEach((correctAnswer) => {
+        // if it is correct, set answers color from default to correct
         if (correctAnswer === answerIndex) {
           actuallyCorrectAnswers[answerIndex] = answerColors.correct;
           maxScore += 1;
@@ -104,10 +117,10 @@ export class QuestionsAndResult extends Component {
       });
     });
 
-    return {actuallyCorrectAnswersSingleQuestion:actuallyCorrectAnswers, maxScoreForSingleQuestion:maxScore}
+    return { actuallyCorrectAnswersSingleQuestion: actuallyCorrectAnswers, maxScoreForSingleQuestion: maxScore }
 
   }
-  
+
   finishTestCalculateResults = () => {
     //cheking if last question is reached by user
     if (
@@ -119,17 +132,17 @@ export class QuestionsAndResult extends Component {
       let finalScore = []; //  userScore / maxScore for all questions
 
       this.props.questionare.forEach((question, questionIndex) => {
-        const {actuallyCorrectAnswersSingleQuestion, maxScoreForSingleQuestion}=this.loopThroughAnswers(question)
+        const { actuallyCorrectAnswersSingleQuestion, maxScoreForSingleQuestion } = this.loopThroughAnswers(question)
         const userAnswersForSingleQuestion = this.state.questionsAndSelectedAnswers[questionIndex]; // - array of answers that user chose as correct and incorrect for single question
-        const {checkedAnswers, finalQuestionScore} = this.checkAnswers(
+        const { checkedAnswers, finalQuestionScore } = this.checkAnswers(
           question,
-          actuallyCorrectAnswersSingleQuestion ,
-          userAnswersForSingleQuestion, 
+          actuallyCorrectAnswersSingleQuestion,
+          userAnswersForSingleQuestion,
           maxScoreForSingleQuestion
         );
 
-        finalScore[questionIndex]=finalQuestionScore
-        actuallyCorrectAnswers.push(actuallyCorrectAnswersSingleQuestion );
+        finalScore[questionIndex] = finalQuestionScore
+        actuallyCorrectAnswers.push(actuallyCorrectAnswersSingleQuestion);
         userAnswers.push(checkedAnswers);
       });
 
@@ -172,18 +185,21 @@ export class QuestionsAndResult extends Component {
     this.moveToNextQuestion();
   };
 
-  answerClicked = (newAnswer) => {
-    let updatedObj=[...this.state.questionsAndSelectedAnswers]
+  answerClicked = (newAnswer: number) => {
+    let updatedObj = [...this.state.questionsAndSelectedAnswers]
     updatedObj[this.state.currentQuestionNumber][newAnswer] ===
-    answerColors.neutral
+      answerColors.neutral
       ? (updatedObj[this.state.currentQuestionNumber][newAnswer] =
-          answerColors.correct)
+        answerColors.correct)
       : (updatedObj[this.state.currentQuestionNumber][newAnswer] =
-          answerColors.neutral);
+        answerColors.neutral);
     this.setState({ questionsAndSelectedAnswers: updatedObj });
   };
 
   showQuestion = () => {
+    console.log('arr ', this.state.questionsAndSelectedAnswers[
+      this.state.currentQuestionNumber
+    ])
     if (this.state.currentQuestionNumber < this.props.questionare.length) {
       return (
         <div>
@@ -200,12 +216,12 @@ export class QuestionsAndResult extends Component {
             }
             selectedAnswersArr={
               this.state.questionsAndSelectedAnswers[
-                this.state.currentQuestionNumber
+              this.state.currentQuestionNumber
               ]
             }
             selectedAnswersColor={
               this.state.questionsAndSelectedAnswers[
-                this.state.currentQuestionNumber
+              this.state.currentQuestionNumber
               ]
             }
           />

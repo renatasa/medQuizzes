@@ -1,0 +1,3 @@
+export {
+    iQuestion
+  } from './myInterfaces';

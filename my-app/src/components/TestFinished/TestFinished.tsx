@@ -1,7 +1,10 @@
-import React from "react";
 import "./TestFinished.scss";
 
-export const testFinished = (props) => {
+interface iProps {
+  toggleResults: () => void
+}
+
+export const testFinished = (props: iProps) => {
   return (
     <div className="testFinished">
       <div className="testFinished-results">You have completed the test!</div>

@@ -1,51 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SingleQuestion from "../SingleQuestion/SingleQuestion";
 import "./QuestionsAndResult.scss";
 import TestFinished from "../TestFinished/TestFinished";
 import { answerColors } from "../../constants/constants";
 import { iQuestion } from '../../types/index';
 
-type MyProps = { questionare: iQuestion[] };
-type MyState = {
-  questionsAndSelectedAnswers: [][],
-  currentQuestionNumber: number,
-  checkedAnswers: [][],
-  correctAnswers: [][],
-  showResults: boolean,
-  score: number[]
-};
+export const QuestionsAndResult = ({ questionare }) => {
+  const [questionsAndSelectedAnswers, setQuestionsAndSelectedAnswers] = useState([]);
+  const [currentQuestionNumber, setCurrentQuestionNumber] = useState(0);
+  const [checkedAnswers, setCheckedAnswers] = useState([]);
+  const [correctAnswers, setCorrectAnswers] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+  const [score, setScore] = useState([]);
 
-export class QuestionsAndResult extends React.Component<MyProps, MyState>  {
-  state = {
-    questionsAndSelectedAnswers: [],
-    currentQuestionNumber: 0,
-    checkedAnswers: [],
-    correctAnswers: [],
-    showResults: false,
-    score: [],
-  };
-
-  componentDidMount() {
+  useEffect(() => {
     let updatedObj = [];
-    updatedObj[0] = this.props.questionare[0].answers.map(
-      (_) => answerColors.neutral
+    updatedObj[0] = questionare[0].answers.map(
+      (_: string) => answerColors.neutral
     );
+    setQuestionsAndSelectedAnswers(updatedObj)
+  }, []);
 
-    this.setState({ questionsAndSelectedAnswers: updatedObj });
-  }
-
-  toggleResults = () => {
-    this.setState({ showResults: true });
+  const toggleResults = () => {
+    setShowResults(true)
   };
 
-  calculateScores = (userScore: number, maxScore: number) => {
+  const calculateScores = (userScore: number, maxScore: number) => {
     if (userScore < 0) {
       userScore = 0;
     }
     return userScore / maxScore;
   }
 
-  checkAnswers = (
+  const checkAnswers = (
     selectedQuestion: iQuestion,
     actuallyCorrectAnswersSingleQuestion: string[],
     userAnswersSingleQuestion: string[],
@@ -90,14 +77,14 @@ export class QuestionsAndResult extends React.Component<MyProps, MyState>  {
 
     })
 
-    const finalScore = this.calculateScores(userScoreForThisQuestion, maxScoreForThisQuestion)
+    const finalScore = calculateScores(userScoreForThisQuestion, maxScoreForThisQuestion)
     return {
       checkedAnswers: checkedAnswers,
       finalQuestionScore: finalScore
     };
   };
 
-  loopThroughAnswers = (question: iQuestion) => {
+  const loopThroughAnswers = (question: iQuestion) => {
     let actuallyCorrectAnswers = []; // - array of actually correct and incorrect answers for single question
 
     let maxScore = 0; // maximum score for a single question, if all chosen answers are correct
@@ -121,20 +108,20 @@ export class QuestionsAndResult extends React.Component<MyProps, MyState>  {
 
   }
 
-  finishTestCalculateResults = () => {
+  const finishTestCalculateResults = () => {
     //cheking if last question is reached by user
     if (
-      this.state.currentQuestionNumber ===
-      this.props.questionare.length - 1
+      currentQuestionNumber ===
+      questionare.length - 1
     ) {
       let actuallyCorrectAnswers = []; // actually correct answers for all questions
       let userAnswers = []; // this array is created after comparison of actuallyCorrectAnswersSingleQuestion and userAnswersForSingleQuestion for all questions
       let finalScore = []; //  userScore / maxScore for all questions
 
-      this.props.questionare.forEach((question, questionIndex) => {
-        const { actuallyCorrectAnswersSingleQuestion, maxScoreForSingleQuestion } = this.loopThroughAnswers(question)
-        const userAnswersForSingleQuestion = this.state.questionsAndSelectedAnswers[questionIndex]; // - array of answers that user chose as correct and incorrect for single question
-        const { checkedAnswers, finalQuestionScore } = this.checkAnswers(
+      questionare.forEach((question: iQuestion, questionIndex: number) => {
+        const { actuallyCorrectAnswersSingleQuestion, maxScoreForSingleQuestion } = loopThroughAnswers(question)
+        const userAnswersForSingleQuestion = questionsAndSelectedAnswers[questionIndex]; // - array of answers that user chose as correct and incorrect for single question
+        const { checkedAnswers, finalQuestionScore } = checkAnswers(
           question,
           actuallyCorrectAnswersSingleQuestion,
           userAnswersForSingleQuestion,
@@ -146,82 +133,75 @@ export class QuestionsAndResult extends React.Component<MyProps, MyState>  {
         userAnswers.push(checkedAnswers);
       });
 
-      this.setState({
-        checkedAnswers: userAnswers,
-        correctAnswers: actuallyCorrectAnswers,
-        score: finalScore,
-      });
+      setCheckedAnswers(userAnswers)
+      setCorrectAnswers(actuallyCorrectAnswers)
+      setScore(finalScore)
     }
   };
 
-  moveToNextQuestion = () => {
+  const moveToNextQuestion = () => {
     let answerBackgroundColors = [];
     // checks if test is not finished
-    if (this.state.currentQuestionNumber < this.props.questionare.length) {
+    if (currentQuestionNumber < questionare.length) {
       // checks if there will be another question
       if (
-        this.state.currentQuestionNumber <
-        this.props.questionare.length - 1
+        currentQuestionNumber <
+        questionare.length - 1
       ) {
-        answerBackgroundColors = this.props.questionare[
-          this.state.currentQuestionNumber + 1
-        ].answers.map((_) => answerColors.neutral);
+        answerBackgroundColors = questionare[
+          currentQuestionNumber + 1
+        ].answers.map((_: number) => answerColors.neutral);
       }
 
-      let updatedArr = [...this.state.questionsAndSelectedAnswers];
+      let updatedArr = [...questionsAndSelectedAnswers];
       updatedArr.push(answerBackgroundColors);
 
-      this.setState({
-        currentQuestionNumber: this.state.currentQuestionNumber + 1,
-        questionsAndSelectedAnswers: [...updatedArr],
-      });
+      setCurrentQuestionNumber(currentQuestionNumber + 1)
+      setQuestionsAndSelectedAnswers(updatedArr)
     }
   };
 
-  nextQuestion = () => {
+  const nextQuestion = () => {
     // if this is last question
-    this.finishTestCalculateResults();
+    finishTestCalculateResults();
     // if this is not last question
-    this.moveToNextQuestion();
+    moveToNextQuestion();
   };
 
-  answerClicked = (newAnswer: number) => {
-    let updatedObj = [...this.state.questionsAndSelectedAnswers]
-    updatedObj[this.state.currentQuestionNumber][newAnswer] ===
+  const answerClicked = (newAnswer: number) => {
+    let updatedObj = [...questionsAndSelectedAnswers]
+    updatedObj[currentQuestionNumber][newAnswer] ===
       answerColors.neutral
-      ? (updatedObj[this.state.currentQuestionNumber][newAnswer] =
+      ? (updatedObj[currentQuestionNumber][newAnswer] =
         answerColors.correct)
-      : (updatedObj[this.state.currentQuestionNumber][newAnswer] =
+      : (updatedObj[currentQuestionNumber][newAnswer] =
         answerColors.neutral);
-    this.setState({ questionsAndSelectedAnswers: updatedObj });
+    setQuestionsAndSelectedAnswers(updatedObj)
   };
 
-  showQuestion = () => {
-    console.log('arr ', this.state.questionsAndSelectedAnswers[
-      this.state.currentQuestionNumber
-    ])
-    if (this.state.currentQuestionNumber < this.props.questionare.length) {
+  const showQuestion = () => {
+    if (currentQuestionNumber < questionare.length) {
       return (
         <div>
           <div className="questionNumber">
-            {this.state.currentQuestionNumber + 1} /{" "}
-            {this.props.questionare.length}
+            {currentQuestionNumber + 1} /{" "}
+            {questionare.length}
           </div>
           <SingleQuestion
-            answerClicked={this.answerClicked}
-            nextClicked={this.nextQuestion}
-            key={this.state.currentQuestionNumber}
+            answerClicked={answerClicked}
+            nextClicked={nextQuestion}
+            key={currentQuestionNumber}
             currentQuestion={
-              this.props.questionare[this.state.currentQuestionNumber]
+              questionare[currentQuestionNumber]
             }
             selectedAnswersArr={
-              this.state.questionsAndSelectedAnswers[
-              this.state.currentQuestionNumber
+              questionsAndSelectedAnswers[
+              currentQuestionNumber
               ]
             }
             selectedAnswersColor={
-              this.state.questionsAndSelectedAnswers[
-              this.state.currentQuestionNumber
+              questionsAndSelectedAnswers[
+              currentQuestionNumber
               ]
             }
           />
@@ -230,24 +210,24 @@ export class QuestionsAndResult extends React.Component<MyProps, MyState>  {
     }
   };
 
-  generateResultsView = () => {
-    let correctAnswers = [];
-    let checkedAnswers = [];
-    this.props.questionare.forEach((question, key) => {
-      checkedAnswers[key] = (
+  const generateResultsView = () => {
+    let correctAnswersArr = [];
+    let checkedAnswersArr = [];
+    questionare.forEach((question: iQuestion, key: number) => {
+      checkedAnswersArr[key] = (
         <div key={key}>
           <SingleQuestion
-            checkedAnswers={this.state.checkedAnswers[key]}
+            checkedAnswers={checkedAnswers[key]}
             currentQuestion={question}
             key={key}
           />
         </div>
       );
 
-      correctAnswers[key] = (
+      correctAnswersArr[key] = (
         <div key={key}>
           <SingleQuestion
-            checkedAnswers={this.state.correctAnswers[key]}
+            checkedAnswers={correctAnswers[key]}
             currentQuestion={question}
             key={key}
           />
@@ -255,29 +235,29 @@ export class QuestionsAndResult extends React.Component<MyProps, MyState>  {
       );
     });
 
-    return { checkedAnswers: checkedAnswers, correctAnswers: correctAnswers };
+    return { checkedAnswers: checkedAnswersArr, correctAnswers: correctAnswersArr };
   };
 
-  displayResults = () => {
+  const displayResults = () => {
     if (
-      this.state.currentQuestionNumber >= this.props.questionare.length &&
-      this.state.showResults
+      currentQuestionNumber >= questionare.length &&
+      showResults
     ) {
-      let testResults = this.generateResultsView();
+      let testResults = generateResultsView();
       return (
         <div>
           <div className="score">
             You scored{" "}
             {(
-              (this.state.score.reduce((a, b) => a + b, 0) /
-                this.state.score.length) *
+              (score.reduce((a, b) => a + b, 0) /
+                score.length) *
               100
             ).toFixed(0)}
             %
           </div>
           <div className="questionare">
             <div>
-              {this.state.checkedAnswers.length ? (
+              {checkedAnswers.length ? (
                 <div className="questions">Your answers</div>
               ) : null}
               <div className="questionareBox">
@@ -286,7 +266,7 @@ export class QuestionsAndResult extends React.Component<MyProps, MyState>  {
             </div>
 
             <div>
-              {this.state.checkedAnswers.length ? (
+              {checkedAnswers.length ? (
                 <div className="questions">Correct answers</div>
               ) : null}
               <div className="questionareBox">
@@ -299,24 +279,24 @@ export class QuestionsAndResult extends React.Component<MyProps, MyState>  {
     }
   };
 
-  displayTestFinishedBox = () => {
+  const displayTestFinishedBox = () => {
     if (
-      this.state.currentQuestionNumber >= this.props.questionare.length &&
-      !this.state.showResults
+      currentQuestionNumber >= questionare.length &&
+      !showResults
     ) {
-      return <TestFinished toggleResults={this.toggleResults} />;
+      return <TestFinished toggleResults={toggleResults} />;
     }
   };
 
-  render() {
-    return (
-      <div>
-        <div className="questionareBox">{this.showQuestion()}</div>
-        {this.displayResults()}
-        {this.displayTestFinishedBox()}
-      </div>
-    );
-  }
+
+  return (
+    <div>
+      <div className="questionareBox">{showQuestion()}</div>
+      {displayResults()}
+      {displayTestFinishedBox()}
+    </div>
+  );
 }
+
 
 export default QuestionsAndResult;
